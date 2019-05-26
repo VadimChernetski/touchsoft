@@ -1,13 +1,14 @@
 package by.touchsoft;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class ReadMessage extends Thread{
+public class ReadMessageClient extends Thread{
 
     private BufferedReader in;
 
-    public ReadMessage(BufferedReader in){
+    public ReadMessageClient(BufferedReader in){
         this.in = in;
     }
 
@@ -17,11 +18,14 @@ public class ReadMessage extends Thread{
         while(true){
             try {
                 message = in.readLine();
+                if(message.equals("/exit")) {
+                    break;
+                }
                 System.out.println(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.print("you: ");
         }
     }
+
 }

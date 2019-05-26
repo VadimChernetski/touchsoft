@@ -6,49 +6,100 @@ import java.util.Map.Entry;
 public class Users {
 
     private static final String monitor = "monitor";
-    private Map<Server, Server> clients = new HashMap<>();
-    private List<Server> freeAgents = new ArrayList<>();
+    private Map<ClientServer, AgentServer> connections = new HashMap<>();
+    private List<AgentServer> freeAgents = new ArrayList<>();
+    private Queue<ClientServer> clients = new LinkedList<>();
 
-    public int addClient(Server server) {
+    public void addClient(ClientServer client) {
         synchronized (monitor) {
-            if (freeAgents.isEmpty()) {
-                clients.put(server, null);
-                return -1;
-            } else {
-                clients.put(server, freeAgents.remove(0));
-                return 1;
+            clients.offer(client);
+        }
+    }
+
+    public Optional<AgentServer> connectClientToAgent(ClientServer client) {
+        Optional<AgentServer> agent = Optional.empty();
+        synchronized (monitor) {
+            AgentServer tempAgent = connections.get(client);
+            if(tempAgent != null){
+                return Optional.of(tempAgent);
+            }
+            if (!freeAgents.isEmpty()) {
+                agent = Optional.of(freeAgents.get(0));
+                connections.put(client, agent.get());
+                clients.remove(client);
             }
         }
+        if(agent.isPresent()){
+            agent.get().setClient(Optional.of(client));
+        }
+        return agent;
     }
 
-    public void addAgent(Server server) {
+    public void disconnectClient(ClientServer client) {
         synchronized (monitor) {
-            freeAgents.add(server);
+            clients.offer(client);
+            AgentServer agent = connections.get(client);
+            freeAgents.add(agent);
+            connections.remove(client);
         }
     }
 
-    public boolean addFreeAgents(Server server) {
+    public void clientExit(ClientServer client) {
+        AgentServer agent;
         synchronized (monitor) {
-            Server agent = clients.get(server);
-            if (agent == null && !freeAgents.isEmpty()) {
-                clients.put(server, freeAgents.remove(0));
-                return true;
+            agent = connections.get(client);
+            connections.remove(client);
+            freeAgents.add(agent);
+        }
+        if(agent != null) {
+            agent.setClient(Optional.empty());
+        }
+    }
+
+    public void addAgent(AgentServer agent) {
+        synchronized (monitor) {
+            freeAgents.add(agent);
+        }
+    }
+
+    public Optional<ClientServer> connectAgentToClient(AgentServer agent) {
+        Optional<ClientServer> client;
+        synchronized (monitor) {
+            client = checkClientInConnections(agent);
+            if (!clients.isEmpty() && !client.isPresent()) {
+                client = Optional.of(clients.poll());
+                connections.put(client.get(), agent);
+                freeAgents.remove(agent);
             }
-            return false;
+        }
+        if(client.isPresent()){
+            client.get().setAgent(Optional.of(agent));
+        }
+        return client;
+    }
+
+    public void agentExit(ClientServer client) {
+        synchronized (monitor) {
+                connections.remove(client);
+                clients.offer(client);
+        }
+        if(client != null) {
+            client.setAgent(Optional.empty());
         }
     }
 
-    public Map<Server, Server> getClients() {
-        return clients;
+    public void agentExit(AgentServer agent) {
+        synchronized (monitor) {
+                freeAgents.remove(agent);
+        }
     }
 
-    public Server getClient(Server server){
-        Server client = null;
+    private Optional<ClientServer> checkClientInConnections (AgentServer agent){
+        Optional<ClientServer> client = Optional.empty();
         synchronized (monitor){
-            for(Entry<Server, Server> entry : clients.entrySet()){
-                Server tempClient = entry.getValue();
-                if(tempClient !=null && tempClient.equals(server)){
-                    client = entry.getKey();
+            for(Entry<ClientServer, AgentServer> entry : connections.entrySet()){
+                if(entry.getValue().equals(agent)){
+                    client = Optional.of(entry.getKey());
                 }
             }
         }

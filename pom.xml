@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>chat</name>
   <modules>
-    <module>client</module>
+    <module>user</module>
     <module>server</module>
   </modules>
 </project>

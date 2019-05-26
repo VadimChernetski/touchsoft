@@ -1,4 +1,6 @@
 /chat.iml
 /.idea
 /server/server.iml
-/client/client.iml
+/user/user.iml
+/user/target/
+/server/target/
