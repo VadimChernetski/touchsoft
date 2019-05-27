@@ -1,14 +1,13 @@
-package by.touchsoft.client;
+package by.touchsoft.chernetski.agent;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class ReadMessageClient extends Thread{
+public class ReadMessageAgent extends Thread{
 
     private BufferedReader in;
 
-    public ReadMessageClient(BufferedReader in){
+    public ReadMessageAgent(BufferedReader in){
         this.in = in;
     }
 

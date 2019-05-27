@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;

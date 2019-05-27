@@ -1,6 +1,6 @@
-package by.touchsoft.client;
+package by.touchsoft.chernetski.client;
 
-import by.touchsoft.UserConstants;
+import by.touchsoft.chernetski.UserConstants;
 
 import java.io.*;
 import java.net.InetAddress;

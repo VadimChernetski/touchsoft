@@ -1,7 +1,7 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
-import by.touchsoft.agent.Agent;
-import by.touchsoft.client.Client;
+import by.touchsoft.chernetski.agent.Agent;
+import by.touchsoft.chernetski.client.Client;
 
 import java.util.Scanner;
 

@@ -64,7 +64,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>lib</classpathPrefix>
-                <mainClass>by.touchsoft.UserRunner</mainClass>
+                <mainClass>by.touchsoft.chernetski.UserRunner</mainClass>
               </manifest>
             </archive>
           </configuration>

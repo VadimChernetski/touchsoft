@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
 import java.util.*;
 import java.util.Map.Entry;

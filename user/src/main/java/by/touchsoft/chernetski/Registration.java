@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

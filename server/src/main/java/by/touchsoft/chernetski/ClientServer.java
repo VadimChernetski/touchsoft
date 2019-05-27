@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.chernetski;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
