@@ -1,4 +1,6 @@
-package by.touchsoft;
+package by.touchsoft.agent;
+
+import by.touchsoft.UserConstants;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,7 +10,6 @@ import java.util.Scanner;
 
 public class SendMessageAgent extends Thread{
 
-    private Agent agent;
     private BufferedWriter out;
     private List<String> responseTemplates;
     private Scanner scanner;

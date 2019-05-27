@@ -35,6 +35,7 @@ public class ClientServer  extends Thread{
                 message = in.readLine();
                 if(message.equals("/leave")){
                     disconnectFromAgent();
+                    continue;
                 }
                 if(message.equals("/exit")){
                     exit();
@@ -74,9 +75,15 @@ public class ClientServer  extends Thread{
             out.write("/exit\n");
             out.flush();
             users.clientExit(this);
-            out.close();
-            in.close();
-            socket.close();
+            if(out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (!socket.isClosed()) {
+                socket.close();
+            }
         } catch (IOException exception){
             exception.printStackTrace();
         }

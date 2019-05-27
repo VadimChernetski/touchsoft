@@ -64,9 +64,15 @@ public class AgentServer extends Thread {
             } else {
                 users.agentExit(this);
             }
-            out.close();
-            in.close();
-            socket.close();
+            if(out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if(!socket.isClosed()) {
+                socket.close();
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
         }

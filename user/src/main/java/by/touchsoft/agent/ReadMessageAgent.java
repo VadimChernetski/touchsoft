@@ -1,4 +1,4 @@
-package by.touchsoft;
+package by.touchsoft.agent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,6 @@ import java.io.IOException;
 public class ReadMessageAgent extends Thread{
 
     private BufferedReader in;
-    private Agent agent;
 
     public ReadMessageAgent(BufferedReader in){
         this.in = in;

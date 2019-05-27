@@ -1,5 +1,8 @@
 package by.touchsoft;
 
+import by.touchsoft.agent.Agent;
+import by.touchsoft.client.Client;
+
 import java.util.Scanner;
 
 public class UserRunner {

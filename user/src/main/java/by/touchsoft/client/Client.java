@@ -1,4 +1,6 @@
-package by.touchsoft;
+package by.touchsoft.client;
+
+import by.touchsoft.UserConstants;
 
 import java.io.*;
 import java.net.InetAddress;
