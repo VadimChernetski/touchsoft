@@ -34,6 +34,11 @@ public class SendMessageClient extends Thread {
                     out.flush();
                     break;
                 }
+                if(message.equals("/leave")){
+                    out.write("/leave\n");
+                    out.flush();
+                    continue;
+                }
                 out.write(name + " (" + timeLine + "): " + message + "\n");
                 out.flush();
             } catch (IOException exception) {

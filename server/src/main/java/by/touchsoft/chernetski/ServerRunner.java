@@ -8,6 +8,7 @@ public class ServerRunner {
 
     public static void main(String[] args) {
         Users users = new Users();
+        new Connector(users).start();
         try {
             Socket socket;
             ServerSocket serverSocket = new ServerSocket(5555);

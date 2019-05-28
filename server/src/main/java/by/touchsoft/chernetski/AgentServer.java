@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public class AgentServer extends Thread {
 
+    private boolean connectionWithClient;
+    private boolean workingStatus;
     private BufferedReader in;
     private BufferedWriter out;
     private Optional<ClientServer> client;
@@ -20,22 +22,23 @@ public class AgentServer extends Thread {
         this.socket = socket;
         this.users = users;
         client = Optional.empty();
+        connectionWithClient = false;
+        workingStatus = true;
     }
 
     @Override
     public void run() {
         users.addAgent(this);
         String message;
-        client = users.connectAgentToClient(this);
-        while (true) {
+        while (workingStatus) {
             try {
-                if (!client.isPresent()) {
-                    client = users.connectAgentToClient(this);
-                }
                 message = in.readLine();
                 if (message.equals("/exit")) {
                     exit();
                     break;
+                }
+                if (!connectionWithClient) {
+                    continue;
                 }
                 if (client.isPresent()) {
                     client.get().sendMessage(message);
@@ -57,20 +60,17 @@ public class AgentServer extends Thread {
 
     private void exit() {
         try {
+            workingStatus = false;
             out.write("/exit\n");
             out.flush();
-            if (client.isPresent()) {
-                users.agentExit(client.get());
-            } else {
-                users.agentExit(this);
-            }
-            if(out != null) {
+            users.agentExit(this);
+            if (out != null) {
                 out.close();
             }
             if (in != null) {
                 in.close();
             }
-            if(!socket.isClosed()) {
+            if (!socket.isClosed()) {
                 socket.close();
             }
         } catch (IOException exception) {
@@ -80,5 +80,13 @@ public class AgentServer extends Thread {
 
     public void setClient(Optional<ClientServer> client) {
         this.client = client;
+    }
+
+    public void setConnectionWithClient(boolean connectionWithClient) {
+        this.connectionWithClient = connectionWithClient;
+    }
+
+    public Optional<ClientServer> getClient() {
+        return client;
     }
 }

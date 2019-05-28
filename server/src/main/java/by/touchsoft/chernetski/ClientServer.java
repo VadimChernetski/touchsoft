@@ -8,10 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientServer  extends Thread{
+public class ClientServer extends Thread {
 
+    private boolean connectionWithAgent;
+    private boolean workingStatus;
     private BufferedReader in;
     private BufferedWriter out;
+    private List<String> messagesBeforeAgentConnect;
     private Optional<AgentServer> agent;
     private Socket socket;
     private Users users;
@@ -22,31 +25,32 @@ public class ClientServer  extends Thread{
         this.socket = socket;
         this.users = users;
         agent = Optional.empty();
+        connectionWithAgent = false;
+        messagesBeforeAgentConnect = new LinkedList<>();
+        workingStatus = true;
     }
 
     @Override
     public void run() {
         users.addClient(this);
         String message;
-        List<String> messagesBeforeAgentConnect = new LinkedList<>();
-        agent = users.connectClientToAgent(this);
-        while(true){
-            try{
+        while (workingStatus) {
+            try {
                 message = in.readLine();
-                if(message.equals("/leave")){
-                    disconnectFromAgent();
+                if (message.equals("/leave")) {
+                    users.disconnectClient(this);
                     continue;
                 }
-                if(message.equals("/exit")){
+                if (message.equals("/exit")) {
+                    users.clientExit(this);
                     exit();
                     break;
                 }
-                if(agent.isPresent()) {
-                    sendMessages(messagesBeforeAgentConnect);
+                if (connectionWithAgent) {
+                    sendMessages();
                     agent.get().sendMessage(message);
                 } else {
                     messagesBeforeAgentConnect.add(message);
-                    agent = users.connectClientToAgent(this);
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
@@ -54,7 +58,7 @@ public class ClientServer  extends Thread{
         }
     }
 
-    private void sendMessages (List<String> messagesBeforeAgentConnect) {
+    public void sendMessages() {
         StringBuilder history = new StringBuilder();
         if (!messagesBeforeAgentConnect.isEmpty()) {
             for (String message : messagesBeforeAgentConnect) {
@@ -65,17 +69,12 @@ public class ClientServer  extends Thread{
         }
     }
 
-    private void disconnectFromAgent(){
-        users.disconnectClient(this);
-        agent = Optional.empty();
-    }
-
-    private void exit(){
-        try{
+    private void exit() {
+        try {
+            workingStatus = false;
             out.write("/exit\n");
             out.flush();
-            users.clientExit(this);
-            if(out != null) {
+            if (out != null) {
                 out.close();
             }
             if (in != null) {
@@ -84,12 +83,12 @@ public class ClientServer  extends Thread{
             if (!socket.isClosed()) {
                 socket.close();
             }
-        } catch (IOException exception){
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         try {
             out.write(message + "\n");
             out.flush();
@@ -100,5 +99,13 @@ public class ClientServer  extends Thread{
 
     public void setAgent(Optional<AgentServer> agent) {
         this.agent = agent;
+    }
+
+    public void setConnectionWithAgent(boolean connectionWithAgent) {
+        this.connectionWithAgent = connectionWithAgent;
+    }
+
+    public Optional<AgentServer> getAgent() {
+        return agent;
     }
 }
