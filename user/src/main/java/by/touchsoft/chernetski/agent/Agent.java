@@ -1,8 +1,10 @@
 package by.touchsoft.chernetski.agent;
 
 import by.touchsoft.chernetski.UserConstants;
+import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -12,17 +14,17 @@ import java.util.Scanner;
 
 public class Agent {
 
-    private boolean connectionStatus;
     private List<String> responseTemplates;
-
+    private Logger logger;
 
     {
         responseTemplates = new ArrayList<>();
         responseTemplates.add("How can I help you?\n");
+        responseTemplates.add("Hello");
     }
 
-    public Agent(String name, String registerMessage, Scanner scanner) {
-        connectionStatus = false;
+    public Agent(String name, String registerMessage, Scanner scanner, Logger logger) {
+        this.logger = logger;
         int i = 0;
         System.out.println("To use a pattern, type its number");
         for (String template : responseTemplates) {
@@ -33,26 +35,22 @@ public class Agent {
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"))) {
             out.write(registerMessage + "\n");
             out.flush();
-            ReadMessageAgent readMessage = new ReadMessageAgent(in);
-            SendMessageAgent sendMessage = new SendMessageAgent(scanner, out, name, responseTemplates);
-            readMessage.start();
-            sendMessage.start();
-            readMessage.join();
-            sendMessage.join();
+            logger.info("agent" + name + " connected");
+            MessageReader messageReader = new MessageReader(in, logger);
+            MessageSender messageSender = new MessageSender(scanner, out, name, responseTemplates, logger);
+            messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+            messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+            messageReader.start();
+            messageSender.start();
+            messageReader.join();
+            messageSender.join();
         } catch (UnknownHostException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         } catch (IOException exception) {
-            exception.printStackTrace();
-        } catch (InterruptedException exception){
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
+        } catch (InterruptedException exception) {
+            logger.error(exception.getMessage());
         }
-    }
-
-    public boolean getConnectionStatus() {
-        return connectionStatus;
-    }
-
-    public void setConnectionStatus(boolean connectionStatus) {
-        this.connectionStatus = connectionStatus;
+        logger.info("agent" + name + " disconnected");
     }
 }

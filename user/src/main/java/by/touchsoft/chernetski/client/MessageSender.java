@@ -1,22 +1,25 @@
 package by.touchsoft.chernetski.client;
 
 import by.touchsoft.chernetski.UserConstants;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Scanner;
 
-public class SendMessageClient extends Thread {
+public class MessageSender extends Thread {
 
     private BufferedWriter out;
+    private Logger logger;
     private Scanner scanner;
     private String name;
 
-    public SendMessageClient(Scanner scanner, BufferedWriter out, String name) {
+    public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger) {
         this.out = out;
         this.scanner = scanner;
         this.name = name;
+        this.logger = logger;
     }
 
     @Override
@@ -42,7 +45,9 @@ public class SendMessageClient extends Thread {
                 out.write(name + " (" + timeLine + "): " + message + "\n");
                 out.flush();
             } catch (IOException exception) {
-                exception.printStackTrace();
+                logger.error(exception.getMessage());
+                System.out.println("some problems with server");
+                System.exit(0);
             }
         }
     }

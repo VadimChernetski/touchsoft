@@ -1,6 +1,7 @@
 package by.touchsoft.chernetski.agent;
 
 import by.touchsoft.chernetski.UserConstants;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,18 +9,20 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
-public class SendMessageAgent extends Thread{
+public class MessageSender extends Thread{
 
     private BufferedWriter out;
     private List<String> responseTemplates;
+    private Logger logger;
     private Scanner scanner;
     private String name;
 
-    public SendMessageAgent(Scanner scanner, BufferedWriter out, String name, List<String> responseTemplates){
+    public MessageSender(Scanner scanner, BufferedWriter out, String name, List<String> responseTemplates, Logger logger){
         this.responseTemplates = responseTemplates;
         this.out = out;
         this.scanner = scanner;
         this.name = name;
+        this.logger = logger;
     }
 
     @Override
@@ -44,7 +47,9 @@ public class SendMessageAgent extends Thread{
                 out.write(name + " (" + timeLine + "): " + message + "\n");
                 out.flush();
             } catch (IOException exception){
-                exception.printStackTrace();
+                logger.error(exception.getMessage());
+                System.out.println("some problems with server");
+                System.exit(0);
             }
         }
     }

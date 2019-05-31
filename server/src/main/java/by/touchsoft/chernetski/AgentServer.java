@@ -1,5 +1,9 @@
 package by.touchsoft.chernetski;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,43 +12,50 @@ import java.util.Optional;
 
 public class AgentServer extends Thread {
 
-    private boolean connectionWithClient;
-    private boolean workingStatus;
+    @Setter
+    private boolean connectionStatus;
     private BufferedReader in;
     private BufferedWriter out;
+    private Logger logger;
+    @Setter @Getter
     private Optional<ClientServer> client;
+    @Getter
+    private String agentName;
     private Socket socket;
     private Users users;
 
-    public AgentServer(BufferedReader in, BufferedWriter out, Socket socket, Users users) {
+    public AgentServer(BufferedReader in, BufferedWriter out, Socket socket, Users users, String name, Logger logger) {
         this.in = in;
         this.out = out;
         this.socket = socket;
         this.users = users;
+        this.agentName = name;
+        this.logger = logger;
         client = Optional.empty();
-        connectionWithClient = false;
-        workingStatus = true;
+        connectionStatus = false;
     }
 
     @Override
     public void run() {
         users.addAgent(this);
         String message;
-        while (workingStatus) {
+        while (true) {
             try {
                 message = in.readLine();
                 if (message.equals("/exit")) {
                     exit();
                     break;
                 }
-                if (!connectionWithClient) {
+                if (!connectionStatus) {
                     continue;
                 }
                 if (client.isPresent()) {
                     client.get().sendMessage(message);
                 }
             } catch (IOException exception) {
-                exception.printStackTrace();
+                users.agentExit(this);
+                logger.error("incorrect exit " + exception.getMessage());
+                break;
             }
         }
     }
@@ -55,12 +66,12 @@ public class AgentServer extends Thread {
             out.flush();
         } catch (IOException exception) {
             exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 
     private void exit() {
         try {
-            workingStatus = false;
             out.write("/exit\n");
             out.flush();
             users.agentExit(this);
@@ -73,20 +84,9 @@ public class AgentServer extends Thread {
             if (!socket.isClosed()) {
                 socket.close();
             }
+            logger.info(agentName + " exit");
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
-    }
-
-    public void setClient(Optional<ClientServer> client) {
-        this.client = client;
-    }
-
-    public void setConnectionWithClient(boolean connectionWithClient) {
-        this.connectionWithClient = connectionWithClient;
-    }
-
-    public Optional<ClientServer> getClient() {
-        return client;
     }
 }

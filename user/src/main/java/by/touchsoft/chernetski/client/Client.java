@@ -1,6 +1,7 @@
 package by.touchsoft.chernetski.client;
 
 import by.touchsoft.chernetski.UserConstants;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -10,24 +11,28 @@ import java.util.Scanner;
 
 public class Client {
 
-    public Client(String name, String registerMessage, Scanner scanner) {
+    public Client(String name, String registerMessage, Scanner scanner, Logger logger) {
         try (Socket socket = new Socket(InetAddress.getByName(UserConstants.ID), UserConstants.PORT);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"))) {
             out.write(registerMessage + "\n");
             out.flush();
-            SendMessageClient sendMessage = new SendMessageClient(scanner, out, name);
-            ReadMessageClient readMessage = new ReadMessageClient(in);
-            sendMessage.start();
-            readMessage.start();
-            sendMessage.join();
-            readMessage.join();
+            logger.info("client" + name + " connected");
+            MessageSender messageSender = new MessageSender(scanner, out, name, logger);
+            MessageReader messageReader = new MessageReader(in, logger);
+            messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+            messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+            messageSender.start();
+            messageReader.start();
+            messageSender.join();
+            messageReader.join();
         } catch (UnknownHostException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         } catch (InterruptedException exception){
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
+        logger.info("client" + name + " disconnected");
     }
 }
