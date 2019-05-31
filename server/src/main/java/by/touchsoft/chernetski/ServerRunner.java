@@ -13,7 +13,9 @@ public class ServerRunner {
         Logger logger = Logger.getLogger("Server");
         logger.info("Server start");
         Users users = new Users(logger);
-        new Connector(users).start();
+        Connector connector = new Connector(users);
+        connector.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+        connector.start();
         try {
             Socket socket;
             ServerSocket serverSocket = new ServerSocket(55555);

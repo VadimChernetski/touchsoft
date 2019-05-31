@@ -19,7 +19,10 @@ public class Users {
         this.logger = logger;
     }
 
-    public void addAgent(AgentServer agent) {
+    public void addUser(AgentServer agent) {
+        if(agent == null){
+            throw new IllegalArgumentException();
+        }
         logger.info(agent.getAgentName() + " connected");
         synchronized (monitor) {
             freeAgents.offer(agent);
@@ -27,7 +30,10 @@ public class Users {
         }
     }
 
-    public void agentExit(AgentServer agent) {
+    public void userExit(AgentServer agent) {
+        if(agent == null){
+            throw new IllegalArgumentException();
+        }
         logger.info("agent " + agent.getAgentName() + " disconnected");
         Optional<ClientServer> client = agent.getClient();
         if (client.isPresent()) {
@@ -41,7 +47,10 @@ public class Users {
         }
     }
 
-    public void addClient(ClientServer client) {
+    public void addUser(ClientServer client) {
+        if(client == null){
+            throw new IllegalArgumentException();
+        }
         logger.info("client " + client.getClientName() + " connected");
         synchronized (monitor) {
             freeClients.addLast(client);
@@ -50,6 +59,9 @@ public class Users {
     }
 
     public void disconnectClient(ClientServer client) {
+        if(client == null){
+            throw new IllegalArgumentException();
+        }
         logger.info("client " + client.getClientName() + " disconnected from agent " +
                 client.getAgent().get().getAgentName());
         client.setConnectionStatus(false);
@@ -66,7 +78,10 @@ public class Users {
         }
     }
 
-    public void clientExit(ClientServer client) {
+    public void userExit(ClientServer client) {
+        if(client == null){
+            throw new IllegalArgumentException();
+        }
         logger.info(client.getClientName() + " disconnected");
         Optional<AgentServer> agent = client.getAgent();
         if (agent.isPresent()) {

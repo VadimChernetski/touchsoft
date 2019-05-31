@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+
 public class ClientServer extends Thread {
 
     @Setter
@@ -42,17 +43,21 @@ public class ClientServer extends Thread {
 
     @Override
     public void run() {
-        users.addClient(this);
+        users.addUser(this);
         String message;
         while (true) {
             try {
                 message = in.readLine();
                 if (message.equals("/leave")) {
-                    users.disconnectClient(this);
-                    continue;
+                    if(connectionStatus) {
+                        users.disconnectClient(this);
+                        continue;
+                    } else {
+                        continue;
+                    }
                 }
                 if (message.equals("/exit")) {
-                    users.clientExit(this);
+                    users.userExit(this);
                     exit();
                     break;
                 }
@@ -63,7 +68,7 @@ public class ClientServer extends Thread {
                     messagesBeforeAgentConnect.add(message);
                 }
             } catch (IOException exception) {
-                users.clientExit(this);
+                users.userExit(this);
                 logger.error("incorrect exit " + exception.getMessage());
                 break;
             }

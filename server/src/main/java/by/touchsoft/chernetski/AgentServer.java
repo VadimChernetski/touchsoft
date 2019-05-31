@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Optional;
 
+
 public class AgentServer extends Thread {
 
     @Setter
@@ -37,7 +38,7 @@ public class AgentServer extends Thread {
 
     @Override
     public void run() {
-        users.addAgent(this);
+        users.addUser(this);
         String message;
         while (true) {
             try {
@@ -53,7 +54,7 @@ public class AgentServer extends Thread {
                     client.get().sendMessage(message);
                 }
             } catch (IOException exception) {
-                users.agentExit(this);
+                users.userExit(this);
                 logger.error("incorrect exit " + exception.getMessage());
                 break;
             }
@@ -74,7 +75,7 @@ public class AgentServer extends Thread {
         try {
             out.write("/exit\n");
             out.flush();
-            users.agentExit(this);
+            users.userExit(this);
             if (out != null) {
                 out.close();
             }
