@@ -4,7 +4,6 @@ import by.touchsoft.chernetski.UserConstants;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -15,7 +14,6 @@ import java.util.Scanner;
 public class Agent {
 
     private List<String> responseTemplates;
-    private Logger logger;
 
     {
         responseTemplates = new ArrayList<>();
@@ -24,7 +22,6 @@ public class Agent {
     }
 
     public Agent(String name, String registerMessage, Scanner scanner, Logger logger) {
-        this.logger = logger;
         int i = 0;
         System.out.println("To use a pattern, type its number");
         for (String template : responseTemplates) {

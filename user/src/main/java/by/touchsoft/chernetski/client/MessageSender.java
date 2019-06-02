@@ -1,7 +1,6 @@
 package by.touchsoft.chernetski.client;
 
 import by.touchsoft.chernetski.UserConstants;
-import by.touchsoft.chernetski.message.Message;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
@@ -13,12 +12,10 @@ public class MessageSender extends Thread {
 
     private BufferedWriter out;
     private Logger logger;
-    private Message message;
     private Scanner scanner;
     private String name;
 
-    public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger, Message message) {
-        this.message = message;
+    public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger) {
         this.out = out;
         this.scanner = scanner;
         this.name = name;
