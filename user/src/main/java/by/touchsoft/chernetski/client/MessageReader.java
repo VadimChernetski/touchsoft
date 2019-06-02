@@ -1,5 +1,6 @@
 package by.touchsoft.chernetski.client;
 
+import by.touchsoft.chernetski.message.Message;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -9,8 +10,10 @@ public class MessageReader extends Thread{
 
     private BufferedReader in;
     private Logger logger;
+    private Message massage;
 
-    public MessageReader(BufferedReader in, Logger logger){
+    public MessageReader(BufferedReader in, Logger logger, Message message){
+        this.massage = message;
         this.in = in;
         this.logger = logger;
     }

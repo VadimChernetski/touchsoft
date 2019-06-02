@@ -19,6 +19,7 @@ public class ClientServer extends Thread {
     private boolean connectionStatus;
     private BufferedReader in;
     private BufferedWriter out;
+    @Setter
     private List<String> messagesBeforeAgentConnect;
     private Logger logger;
     @Getter
@@ -78,10 +79,16 @@ public class ClientServer extends Thread {
     public void sendMessages() {
         StringBuilder history = new StringBuilder();
         if (!messagesBeforeAgentConnect.isEmpty()) {
-            for (String message : messagesBeforeAgentConnect) {
-                history.append(message).append("\n");
+            int messagesCoutn = messagesBeforeAgentConnect.size();
+            for (int i = 0; i < messagesCoutn; i++) {
+                if(i == messagesCoutn - 1){
+                    history.append(messagesBeforeAgentConnect.get(i));
+                } else {
+                    history.append(messagesBeforeAgentConnect.get(i)).append("\n");
+                }
             }
             messagesBeforeAgentConnect.clear();
+            history.subSequence(history.length()-2, history.length()-1);
             agent.get().sendMessage(history.toString());
         }
     }

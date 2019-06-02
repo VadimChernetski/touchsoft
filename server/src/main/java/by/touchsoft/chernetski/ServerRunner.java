@@ -18,7 +18,7 @@ public class ServerRunner {
         connector.start();
         try {
             Socket socket;
-            ServerSocket serverSocket = new ServerSocket(55555);
+            ServerSocket serverSocket = new ServerSocket(ServerConstants.PORT);
             while (true){
                 socket = serverSocket.accept();
                 ServerCreator.CreateServer(socket, users, logger);

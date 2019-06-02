@@ -2,6 +2,7 @@ package by.touchsoft.chernetski;
 
 import by.touchsoft.chernetski.agent.Agent;
 import by.touchsoft.chernetski.client.Client;
+import by.touchsoft.chernetski.registration.Registration;
 import org.apache.log4j.Logger;
 
 import java.util.Scanner;

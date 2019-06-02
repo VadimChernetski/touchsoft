@@ -1,6 +1,7 @@
 package by.touchsoft.chernetski.client;
 
 import by.touchsoft.chernetski.UserConstants;
+import by.touchsoft.chernetski.message.Message;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
@@ -12,10 +13,12 @@ public class MessageSender extends Thread {
 
     private BufferedWriter out;
     private Logger logger;
+    private Message message;
     private Scanner scanner;
     private String name;
 
-    public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger) {
+    public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger, Message message) {
+        this.message = message;
         this.out = out;
         this.scanner = scanner;
         this.name = name;
@@ -24,25 +27,26 @@ public class MessageSender extends Thread {
 
     @Override
     public void run() {
-        String message;
+        String context;
         LocalTime time;
         String timeLine;
         while (true) {
             time = LocalTime.now();
             timeLine = time.format(UserConstants.TIME_FORMATTER);
-            message = scanner.nextLine();
+            context = scanner.nextLine();
             try {
-                if (message.equals("/exit")){
+                if (context.equals("/exit")){
                     out.write("/exit\n");
                     out.flush();
                     break;
                 }
-                if(message.equals("/leave")){
+                if(context.equals("/leave")){
                     out.write("/leave\n");
                     out.flush();
                     continue;
                 }
-                out.write(name + " (" + timeLine + "): " + message + "\n");
+                context = name + " (" + timeLine + "): " + context + "\n";
+                out.write(name + " (" + timeLine + "): " + context + "\n");
                 out.flush();
             } catch (IOException exception) {
                 logger.error(exception.getMessage());

@@ -1,4 +1,6 @@
-package by.touchsoft.chernetski;
+package by.touchsoft.chernetski.registration;
+
+import by.touchsoft.chernetski.UserConstants;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -24,7 +26,7 @@ public class Registration {
                 name = clientData[2];
                 break;
             } else {
-                System.out.println("Wrong command, try again");
+                System.out.print("Wrong command, try again\n");
             }
         }
         return role;

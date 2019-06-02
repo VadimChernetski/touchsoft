@@ -134,4 +134,16 @@ public class UsersTest {
     void disconnectClientShouldThrowIllegalArgumentExceptionIfClientNull(){
         assertThrows(IllegalArgumentException.class, () -> users.disconnectClient(null));
     }
+
+    @Test
+    void tryToConnectShouldConnectAgentAndClientIfTheyFree(){
+        BufferedWriter out = new BufferedWriter(new StringWriter());
+        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
+        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        users.addUser(agent);
+        users.addUser(client);
+        users.tryToConnect();
+        assertEquals(client.getAgent().get(), agent);
+        assertEquals(agent.getClient().get(), client);
+    }
 }
