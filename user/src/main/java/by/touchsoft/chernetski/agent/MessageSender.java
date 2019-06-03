@@ -32,7 +32,10 @@ public class MessageSender extends Thread{
         String timeLine;
         while(true){
             try {
-                message = scanner.nextLine();
+                message = scanner.nextLine().trim();
+                if(message.isEmpty()){
+                    continue;
+                }
                 if(message.equals("/exit")){
                     out.write("/exit\n");
                     out.flush();

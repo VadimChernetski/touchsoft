@@ -28,16 +28,19 @@ public class MessageSender extends Thread {
         LocalTime time;
         String timeLine;
         while (true) {
-            time = LocalTime.now();
-            timeLine = time.format(UserConstants.TIME_FORMATTER);
-            message = scanner.nextLine();
             try {
-                if (message.equals("/exit")){
+                time = LocalTime.now();
+                timeLine = time.format(UserConstants.TIME_FORMATTER);
+                message = scanner.nextLine().trim();
+                if(message.isEmpty()){
+                    continue;
+                }
+                if (message.equals("/exit")) {
                     out.write("/exit\n");
                     out.flush();
                     break;
                 }
-                if(message.equals("/leave")){
+                if (message.equals("/leave")) {
                     out.write("/leave\n");
                     out.flush();
                     continue;
