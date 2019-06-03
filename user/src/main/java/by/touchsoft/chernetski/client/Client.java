@@ -17,7 +17,7 @@ public class Client {
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"))) {
             out.write(registerMessage + "\n");
             out.flush();
-            logger.info("client" + name + " connected");
+            logger.info("client " + name + " connected");
             MessageSender messageSender = new MessageSender(scanner, out, name, logger);
             MessageReader messageReader = new MessageReader(in, logger);
             messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
@@ -33,6 +33,6 @@ public class Client {
         } catch (InterruptedException exception){
             logger.error(exception.getMessage());
         }
-        logger.info("client" + name + " disconnected");
+        logger.info("client " + name + " disconnected");
     }
 }

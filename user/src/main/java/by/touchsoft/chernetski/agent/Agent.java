@@ -17,7 +17,7 @@ public class Agent {
 
     {
         responseTemplates = new ArrayList<>();
-        responseTemplates.add("How can I help you?\n");
+        responseTemplates.add("How can I help you?");
         responseTemplates.add("Hello");
     }
 
@@ -32,7 +32,7 @@ public class Agent {
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"))) {
             out.write(registerMessage + "\n");
             out.flush();
-            logger.info("agent" + name + " connected");
+            logger.info("agent " + name + " connected");
             MessageReader messageReader = new MessageReader(in, logger);
             MessageSender messageSender = new MessageSender(scanner, out, name, responseTemplates, logger);
             messageReader.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
@@ -48,6 +48,6 @@ public class Agent {
         } catch (InterruptedException exception) {
             logger.error(exception.getMessage());
         }
-        logger.info("agent" + name + " disconnected");
+        logger.info("agent " + name + " disconnected");
     }
 }

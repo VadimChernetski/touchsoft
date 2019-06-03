@@ -24,26 +24,26 @@ public class MessageSender extends Thread {
 
     @Override
     public void run() {
-        String context;
+        String message;
         LocalTime time;
         String timeLine;
         while (true) {
             time = LocalTime.now();
             timeLine = time.format(UserConstants.TIME_FORMATTER);
-            context = scanner.nextLine();
+            message = scanner.nextLine();
             try {
-                if (context.equals("/exit")){
+                if (message.equals("/exit")){
                     out.write("/exit\n");
                     out.flush();
                     break;
                 }
-                if(context.equals("/leave")){
+                if(message.equals("/leave")){
                     out.write("/leave\n");
                     out.flush();
                     continue;
                 }
-                context = name + " (" + timeLine + "): " + context + "\n";
-                out.write(name + " (" + timeLine + "): " + context + "\n");
+                message = name + " (" + timeLine + "): " + message + "\n";
+                out.write(message);
                 out.flush();
             } catch (IOException exception) {
                 logger.error(exception.getMessage());

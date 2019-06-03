@@ -43,7 +43,7 @@ public class Users {
                 client.get().setAgent(Optional.empty());
                 monitor.notify();
             }
-            client.get().sendMessage("Agent disconnected\nType a message to join another agent\n");
+            client.get().sendMessage("Agent disconnected\nType a message to join another agent");
         }
     }
 
@@ -53,8 +53,10 @@ public class Users {
         }
         logger.info("client " + client.getClientName() + " connected");
         synchronized (monitor) {
-            freeClients.addLast(client);
-            monitor.notify();
+            if(!freeClients.contains(client)) {
+                freeClients.addLast(client);
+                monitor.notify();
+            }
         }
     }
 
@@ -67,12 +69,11 @@ public class Users {
         client.setConnectionStatus(false);
         Optional<AgentServer> agent = client.getAgent();
         if (agent.isPresent()) {
-            agent.get().sendMessage("Client disconnected\n");
+            agent.get().sendMessage("Client disconnected");
             agent.get().setConnectionStatus(false);
             agent.get().setClient(Optional.empty());
             synchronized (monitor) {
                 freeAgents.offer(agent.get());
-                freeClients.addLast(client);
                 monitor.notify();
             }
         }
@@ -85,7 +86,7 @@ public class Users {
         logger.info(client.getClientName() + " disconnected");
         Optional<AgentServer> agent = client.getAgent();
         if (agent.isPresent()) {
-            agent.get().sendMessage("Client disconnected\n");
+            agent.get().sendMessage("Client disconnected");
             agent.get().setConnectionStatus(false);
             agent.get().setClient(Optional.empty());
             logger.info("agent " + agent.get().getAgentName() + " disconnected from client");
@@ -115,8 +116,8 @@ public class Users {
             logger.info("client " + client.getClientName() + " connected to agent " + agent.getAgentName());
             agent.setClient(Optional.of(client));
             client.setAgent(Optional.of(agent));
-            client.sendMessage("Agent connected\n");
-            agent.sendMessage("Client connected\n");
+            client.sendMessage("Agent connected");
+            agent.sendMessage("Client connected");
             client.sendMessages();
             agent.setConnectionStatus(true);
             client.setConnectionStatus(true);

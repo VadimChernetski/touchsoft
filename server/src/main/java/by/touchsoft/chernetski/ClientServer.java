@@ -66,6 +66,7 @@ public class ClientServer extends Thread {
                     sendMessages();
                     agent.get().sendMessage(message);
                 } else {
+                    users.addUser(this);
                     messagesBeforeAgentConnect.add(message);
                 }
             } catch (IOException exception) {
