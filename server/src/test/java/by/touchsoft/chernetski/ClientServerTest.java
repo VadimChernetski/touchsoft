@@ -1,13 +1,16 @@
 package by.touchsoft.chernetski;
 
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClientServerTest {
 
@@ -56,5 +59,27 @@ public class ClientServerTest {
             testFile.delete();
         }
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void checkCorrectExit(){
+        File testFile = new File("test.txt");
+        Logger logger = Logger.getLogger("test");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(testFile));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream("/exit\n".getBytes())));
+            ClientServer client = new ClientServer(reader, writer, new Socket(), new Users(logger), "Test", logger);
+            client.start();
+            assertTrue(client.isAlive());
+            Thread.currentThread().sleep(250);
+            assertTrue(!client.isAlive());
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        } catch (InterruptedException exception){
+            exception.printStackTrace();
+        }
+        if (testFile.exists()) {
+            testFile.delete();
+        }
     }
 }
