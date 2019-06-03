@@ -1,5 +1,6 @@
-package by.touchsoft.chernetski;
+package by.touchsoft.chernetski.servers;
 
+import by.touchsoft.chernetski.connection.Users;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;

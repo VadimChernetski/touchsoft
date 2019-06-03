@@ -1,4 +1,4 @@
-package by.touchsoft.chernetski;
+package by.touchsoft.chernetski.connection;
 
 public class Connector extends Thread {
 

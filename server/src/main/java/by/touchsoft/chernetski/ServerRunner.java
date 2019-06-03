@@ -1,7 +1,8 @@
 package by.touchsoft.chernetski;
 
+import by.touchsoft.chernetski.connection.Connector;
+import by.touchsoft.chernetski.connection.Users;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 import java.net.ServerSocket;

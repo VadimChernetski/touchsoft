@@ -1,5 +1,8 @@
 package by.touchsoft.chernetski;
 
+import by.touchsoft.chernetski.connection.Users;
+import by.touchsoft.chernetski.servers.AgentServer;
+import by.touchsoft.chernetski.servers.ClientServer;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
