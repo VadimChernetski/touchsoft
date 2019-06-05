@@ -72,7 +72,7 @@ public class UsersTest {
     }
 
     @Test
-    void exitUserShouldPutAgentToDeque(){
+    void exitUserShouldPutAgentToDeque() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
         ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
         AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
@@ -86,17 +86,17 @@ public class UsersTest {
     }
 
     @Test
-    void exitUserShouldThrowIllegalArgumentExceptionIfAgentIsNull(){
-        assertThrows(IllegalArgumentException.class, () -> users.userExit((AgentServer)null));
+    void exitUserShouldThrowIllegalArgumentExceptionIfAgentIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> users.userExit((AgentServer) null));
     }
 
     @Test
-    void exitUserShouldThrowIllegalArgumentExceptionIClientIsNull(){
+    void exitUserShouldThrowIllegalArgumentExceptionIClientIsNull() {
         assertThrows(IllegalArgumentException.class, () -> users.userExit((ClientServer) null));
     }
 
     @Test
-    void exitUserShouldNotPutAgentToDequeIfItIsNull(){
+    void exitUserShouldNotPutAgentToDequeIfItIsNull() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
         ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
         Queue<AgentServer> expected = new LinkedList<>();
@@ -116,30 +116,26 @@ public class UsersTest {
     }
 
     @Test
-    void disconnectClientShouldPutClientAndAgentToCollections(){
+    void disconnectClientShouldDissconectClientFromAgent() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
         ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
         AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
         client.setAgent(Optional.of(agent));
         agent.setClient(Optional.of(client));
         Queue<AgentServer> expectedQueue = new LinkedList<>();
-        Deque<ClientServer> expectedDeque = new LinkedList<>();
-        expectedDeque.addLast(client);
         expectedQueue.offer(agent);
         users.disconnectClient(client);
         Queue<AgentServer> actualQueue = users.getFreeAgents();
-        Deque<ClientServer> actualDeque = users.getFreeClients();
-        assertAll(() -> assertEquals(expectedDeque, actualDeque),
-                  () -> assertEquals(expectedQueue, actualQueue));
+        assertEquals(expectedQueue, actualQueue);
     }
 
     @Test
-    void disconnectClientShouldThrowIllegalArgumentExceptionIfClientNull(){
+    void disconnectClientShouldThrowIllegalArgumentExceptionIfClientNull() {
         assertThrows(IllegalArgumentException.class, () -> users.disconnectClient(null));
     }
 
     @Test
-    void tryToConnectShouldConnectAgentAndClientIfTheyFree(){
+    void tryToConnectShouldConnectAgentAndClientIfTheyFree() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
         ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
         AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
