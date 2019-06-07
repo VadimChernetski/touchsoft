@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Optional;
 
 
-public class AgentServer extends Thread {
+public class AgentServer extends Thread implements  UserServer{
 
     @Setter
     private boolean connectionStatus;
@@ -62,6 +62,7 @@ public class AgentServer extends Thread {
         }
     }
 
+    @Override
     public void sendMessage(String message) {
         try {
             out.write(message + "\n");

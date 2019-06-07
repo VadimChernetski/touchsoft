@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class ClientServer extends Thread {
+public class ClientServer extends Thread implements UserServer {
 
     @Setter
     private boolean connectionStatus;
@@ -113,6 +113,7 @@ public class ClientServer extends Thread {
         }
     }
 
+    @Override
     public void sendMessage(String message) {
         try {
             out.write(message + "\n");
