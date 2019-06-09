@@ -11,9 +11,11 @@ import java.util.*;
 public class Users {
 
     private static final String monitor = "monitor";
-    @Getter @Setter
+    @Getter
+    @Setter
     private Queue<AgentServer> freeAgents = new LinkedList<>();
-    @Getter @Setter
+    @Getter
+    @Setter
     private Deque<ClientServer> freeClients = new LinkedList<>();
     private Logger logger;
 
@@ -22,7 +24,7 @@ public class Users {
     }
 
     public void addUser(AgentServer agent) {
-        if(agent == null){
+        if (agent == null) {
             throw new IllegalArgumentException();
         }
         logger.info(agent.getAgentName() + " connected");
@@ -33,29 +35,31 @@ public class Users {
     }
 
     public void userExit(AgentServer agent) {
-        if(agent == null){
+        if (agent == null) {
             throw new IllegalArgumentException();
         }
         logger.info("agent " + agent.getAgentName() + " disconnected");
         Optional<ClientServer> client = agent.getClient();
-        if (client.isPresent()) {
-            synchronized (monitor) {
+        synchronized (monitor) {
+            if (client.isPresent()) {
                 freeClients.addFirst(client.get());
                 client.get().setConnectionStatus(false);
                 client.get().setAgent(Optional.empty());
-                monitor.notify();
+                client.get().sendMessage("Agent disconnected\nType a message to join another agent");
+            } else {
+                freeAgents.remove(agent);
             }
-            client.get().sendMessage("Agent disconnected\nType a message to join another agent");
+            monitor.notify();
         }
     }
 
     public void addUser(ClientServer client) {
-        if(client == null){
+        if (client == null) {
             throw new IllegalArgumentException();
         }
         logger.info("client " + client.getClientName() + " connected");
         synchronized (monitor) {
-            if(!freeClients.contains(client)) {
+            if (!freeClients.contains(client)) {
                 freeClients.addLast(client);
                 monitor.notify();
             }
@@ -63,7 +67,7 @@ public class Users {
     }
 
     public void disconnectClient(ClientServer client) {
-        if(client == null){
+        if (client == null) {
             throw new IllegalArgumentException();
         }
         logger.info("client " + client.getClientName() + " disconnected from agent " +
@@ -82,20 +86,22 @@ public class Users {
     }
 
     public void userExit(ClientServer client) {
-        if(client == null){
+        if (client == null) {
             throw new IllegalArgumentException();
         }
         logger.info(client.getClientName() + " disconnected");
         Optional<AgentServer> agent = client.getAgent();
-        if (agent.isPresent()) {
-            agent.get().sendMessage("Client disconnected");
-            agent.get().setConnectionStatus(false);
-            agent.get().setClient(Optional.empty());
-            logger.info("agent " + agent.get().getAgentName() + " disconnected from client");
-            synchronized (monitor) {
+        synchronized (monitor) {
+            if (agent.isPresent()) {
+                agent.get().sendMessage("Client disconnected");
+                agent.get().setConnectionStatus(false);
+                agent.get().setClient(Optional.empty());
+                logger.info("agent " + agent.get().getAgentName() + " disconnected from client");
                 freeAgents.offer(agent.get());
-                monitor.notify();
+            } else {
+                freeClients.remove(client);
             }
+            monitor.notify();
         }
     }
 
@@ -114,7 +120,7 @@ public class Users {
                 }
             }
         }
-        if (agent != null && client != null){
+        if (agent != null && client != null) {
             logger.info("client " + client.getClientName() + " connected to agent " + agent.getAgentName());
             agent.setClient(Optional.of(client));
             client.setAgent(Optional.of(agent));

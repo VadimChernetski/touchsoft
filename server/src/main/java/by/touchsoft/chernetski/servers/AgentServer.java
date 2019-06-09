@@ -68,7 +68,6 @@ public class AgentServer extends Thread implements  UserServer{
             out.write(message + "\n");
             out.flush();
         } catch (IOException exception) {
-            exception.printStackTrace();
             logger.error(exception.getMessage());
         }
     }

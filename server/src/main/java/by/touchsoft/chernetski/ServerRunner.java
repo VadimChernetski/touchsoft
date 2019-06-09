@@ -25,7 +25,6 @@ public class ServerRunner {
                 ServerCreator.CreateServer(socket, users, logger);
             }
         } catch (IOException exception){
-            exception.printStackTrace();
             logger.error(exception.getMessage() + "\n" + exception.getStackTrace());
         }
     }

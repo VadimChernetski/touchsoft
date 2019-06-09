@@ -59,7 +59,6 @@ public class ClientServer extends Thread implements UserServer {
                     }
                 }
                 if (message.equals("/exit")) {
-                    users.userExit(this);
                     exit();
                     break;
                 }
@@ -81,9 +80,9 @@ public class ClientServer extends Thread implements UserServer {
     public void sendMessages() {
         StringBuilder history = new StringBuilder();
         if (!messagesBeforeAgentConnect.isEmpty()) {
-            int messagesCoutn = messagesBeforeAgentConnect.size();
-            for (int i = 0; i < messagesCoutn; i++) {
-                if(i == messagesCoutn - 1){
+            int messagesCount = messagesBeforeAgentConnect.size();
+            for (int i = 0; i < messagesCount; i++) {
+                if(i == messagesCount - 1){
                     history.append(messagesBeforeAgentConnect.get(i));
                 } else {
                     history.append(messagesBeforeAgentConnect.get(i)).append("\n");
@@ -99,6 +98,7 @@ public class ClientServer extends Thread implements UserServer {
         try {
             out.write("/exit\n");
             out.flush();
+            users.userExit(this);
             if (out != null) {
                 out.close();
             }

@@ -9,5 +9,6 @@
   <modules>
     <module>user</module>
     <module>server</module>
+    <module>webuser</module>
   </modules>
 </project>
