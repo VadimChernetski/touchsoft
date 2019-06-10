@@ -38,6 +38,7 @@ public class Connector extends Thread {
             try {
                 input = in.readLine();
                 if(input.equals("/exit")){
+                    exit();
                     break;
                 }
                 matcher = pattern.matcher(input);
@@ -51,6 +52,7 @@ public class Connector extends Thread {
             } catch (IOException exception) {
                 endPoint.sendMessage(new Message("some problems with server", "server"));
                 exception.printStackTrace();
+                break;
             }
         }
     }
@@ -59,6 +61,22 @@ public class Connector extends Thread {
         try {
             out.write(message + "\n");
             out.flush();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private void exit(){
+        try {
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (!socket.isClosed()) {
+                socket.close();
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
         }

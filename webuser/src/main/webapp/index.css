@@ -32,12 +32,6 @@ body:before {
     z-index: 0;
 }
 
-.clearfix:after {
-    display: block;
-    content: "";
-    clear: both;
-}
-
 .hidden {
     display: none;
 }
