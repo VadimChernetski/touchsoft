@@ -4,6 +4,9 @@ import by.touchsoft.chernetski.connection.connecter.Connector;
 import by.touchsoft.chernetski.websocket.decoder.MessageDecoder;
 import by.touchsoft.chernetski.websocket.encoder.MessageEncoder;
 import by.touchsoft.chernetski.websocket.message.Message;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.log4j.Logger;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -16,6 +19,8 @@ public class ChatEndPoint {
 
     private boolean connectionStatus = false;
     private Connector connector;
+    private Logger logger = Logger.getLogger("webApp");
+    @Getter @Setter
     private Session session;
 
     @OnOpen
@@ -45,14 +50,14 @@ public class ChatEndPoint {
 
     public void sendMessage(Message message) {
         try {
-            this.session.getBasicRemote().sendObject(message);
+            session.getBasicRemote().sendObject(message);
         } catch (IOException | EncodeException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 
     private void registration(Message message) {
-        connector = new Connector(this);
+        connector = new Connector(this, logger, message.getContext());
         connector.start();
         connector.sendMessage(message.toString());
         connectionStatus = true;

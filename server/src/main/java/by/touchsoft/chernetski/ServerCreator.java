@@ -30,7 +30,7 @@ public class ServerCreator {
                     break;
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 

@@ -3,21 +3,32 @@ package by.touchsoft.chernetski.connection.connecter;
 import by.touchsoft.chernetski.connection.constants.ConnectionConstants;
 import by.touchsoft.chernetski.websocket.endpoint.ChatEndPoint;
 import by.touchsoft.chernetski.websocket.message.Message;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor
 public class Connector extends Thread {
 
     private BufferedReader in;
+    @Setter
     private BufferedWriter out;
     private ChatEndPoint endPoint;
+    private Logger logger;
+    private String name;
     private Socket socket;
 
-    public Connector(ChatEndPoint endPoint){
+    public Connector(ChatEndPoint endPoint, Logger logger, String name){
         this.endPoint = endPoint;
+        this.name = name;
+        this.logger = logger;
+        logger.info(name + " connected");
         try {
             this.socket = new Socket(ConnectionConstants.ID, ConnectionConstants.PORT);
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
@@ -50,8 +61,8 @@ public class Connector extends Thread {
                 }
                 endPoint.sendMessage(message);
             } catch (IOException exception) {
+                logger.error(exception.getMessage());
                 endPoint.sendMessage(new Message("some problems with server", "server"));
-                exception.printStackTrace();
                 break;
             }
         }
@@ -62,11 +73,12 @@ public class Connector extends Thread {
             out.write(message + "\n");
             out.flush();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 
     private void exit(){
+        logger.info(name + " exit");
         try {
             if (out != null) {
                 out.close();
@@ -78,7 +90,7 @@ public class Connector extends Thread {
                 socket.close();
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 }
