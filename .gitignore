@@ -6,3 +6,6 @@
 /server/target/
 /webuser/target/
 /webuser/webuser.iml
+/serverLog.log
+/userLog.log
+/server/serverLog.log

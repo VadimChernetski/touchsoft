@@ -1,0 +1,112 @@
+2019-06-02 15:47:46 [INFO ] user:14 - start application
+2019-06-02 15:58:36 [INFO ] user:14 - start application
+2019-06-02 16:18:34 [INFO ] user:14 - start application
+2019-06-02 16:25:52 [INFO ] user:14 - start application
+2019-06-02 16:26:01 [INFO ] user:23 - clientjava connected
+2019-06-02 16:26:05 [ERROR] user:38 - Connection reset
+2019-06-03 00:42:38 [INFO ] user:14 - start application
+2019-06-03 00:43:18 [INFO ] user:14 - start application
+2019-06-03 00:43:31 [INFO ] user:14 - start application
+2019-06-03 00:43:37 [INFO ] user:14 - start application
+2019-06-03 00:43:43 [INFO ] user:18 - clientjava connected
+2019-06-03 00:43:52 [INFO ] user:35 - agentjavac connected
+2019-06-03 00:44:25 [ERROR] user:52 - Connection reset
+2019-06-03 00:47:54 [INFO ] user:14 - start application
+2019-06-03 00:47:56 [INFO ] user:14 - start application
+2019-06-03 00:48:02 [INFO ] user:20 - clientjava connected
+2019-06-03 00:48:14 [INFO ] user:20 - clientjavatwo connected
+2019-06-03 00:48:18 [INFO ] user:14 - start application
+2019-06-03 00:48:25 [INFO ] user:35 - agentjavac connected
+2019-06-03 00:48:51 [INFO ] user:36 - clientjavatwo disconnected
+2019-06-03 00:49:07 [INFO ] user:51 - agentjavac disconnected
+2019-06-03 00:49:15 [ERROR] user:30 - Connection reset
+2019-06-03 01:15:27 [INFO ] user:14 - start application
+2019-06-03 01:15:39 [ERROR] user:47 - Connection refused: connect
+2019-06-03 01:15:39 [INFO ] user:51 - agentcooper disconnected
+2019-06-03 09:51:51 [INFO ] user:14 - start application
+2019-06-03 09:51:55 [INFO ] user:14 - start application
+2019-06-03 09:52:03 [ERROR] user:32 - Connection refused: connect
+2019-06-03 09:52:03 [INFO ] user:36 - clientjava disconnected
+2019-06-03 09:52:22 [ERROR] user:47 - Connection refused: connect
+2019-06-03 09:52:22 [INFO ] user:51 - agentjavac disconnected
+2019-06-03 09:55:01 [INFO ] user:14 - start application
+2019-06-03 09:55:03 [INFO ] user:14 - start application
+2019-06-03 09:55:13 [INFO ] user:20 - clientjava connected
+2019-06-03 09:55:35 [INFO ] user:35 - agentjavac connected
+2019-06-03 09:56:34 [INFO ] user:14 - start application
+2019-06-03 09:56:37 [INFO ] user:14 - start application
+2019-06-03 09:56:50 [INFO ] user:20 - clientjava123 connected
+2019-06-03 09:57:30 [INFO ] user:35 - agentasd connected
+2019-06-03 09:58:04 [INFO ] user:14 - start application
+2019-06-03 09:58:06 [INFO ] user:14 - start application
+2019-06-03 09:58:15 [INFO ] user:20 - clientjavac connected
+2019-06-03 09:58:31 [INFO ] user:35 - agentasd connected
+2019-06-03 09:59:26 [ERROR] user:29 - Connection reset
+2019-06-03 09:59:31 [INFO ] user:14 - start application
+2019-06-03 09:59:34 [INFO ] user:14 - start application
+2019-06-03 09:59:44 [INFO ] user:35 - agentjavac connected
+2019-06-03 09:59:56 [INFO ] user:20 - clientasd123 connected
+2019-06-03 10:00:27 [ERROR] user:29 - Connection reset
+2019-06-03 10:00:27 [ERROR] user:30 - Connection reset
+2019-06-03 10:01:20 [INFO ] user:14 - start application
+2019-06-03 10:01:23 [INFO ] user:14 - start application
+2019-06-03 10:01:33 [INFO ] user:20 - clientasd12 connected
+2019-06-03 10:01:42 [INFO ] user:35 - agentjava connected
+2019-06-03 10:29:14 [INFO ] user:14 - start application
+2019-06-03 10:29:16 [INFO ] user:14 - start application
+2019-06-03 10:29:24 [INFO ] user:20 - client java connected
+2019-06-03 10:29:37 [INFO ] user:35 - agent javac connected
+2019-06-03 10:30:25 [INFO ] user:14 - start application
+2019-06-03 10:30:32 [INFO ] user:35 - agent javac2 connected
+2019-06-03 10:32:21 [INFO ] user:14 - start application
+2019-06-03 10:32:24 [INFO ] user:14 - start application
+2019-06-03 10:32:25 [INFO ] user:14 - start application
+2019-06-03 10:32:31 [INFO ] user:20 - client java connected
+2019-06-03 10:32:39 [INFO ] user:35 - agent java1 connected
+2019-06-03 10:32:57 [INFO ] user:35 - agent jvc3 connected
+2019-06-03 10:33:15 [INFO ] user:36 - client java disconnected
+2019-06-03 10:33:22 [INFO ] user:51 - agent jvc3 disconnected
+2019-06-03 10:33:26 [INFO ] user:51 - agent java1 disconnected
+2019-06-03 12:51:21 [INFO ] user:14 - start application
+2019-06-03 12:51:24 [INFO ] user:14 - start application
+2019-06-03 12:51:38 [INFO ] user:35 - agent java connected
+2019-06-03 12:51:47 [INFO ] user:20 - client javac connected
+2019-06-03 12:52:35 [INFO ] user:51 - agent java disconnected
+2019-06-03 12:52:44 [INFO ] user:36 - client javac disconnected
+2019-06-03 16:43:55 [INFO ] user:14 - start application
+2019-06-03 16:44:17 [INFO ] user:14 - start application
+2019-06-03 16:44:22 [INFO ] user:20 - client java] connected
+2019-06-03 16:44:34 [INFO ] user:35 - agent javac connected
+2019-06-03 16:45:01 [INFO ] user:36 - client java] disconnected
+2019-06-03 16:45:04 [INFO ] user:51 - agent javac disconnected
+2019-06-09 23:44:49 [INFO ] user:14 - start application
+2019-06-09 23:45:17 [INFO ] user:14 - start application
+2019-06-09 23:45:40 [INFO ] user:20 - client java connected
+2019-06-10 00:28:52 [INFO ] user:14 - start application
+2019-06-10 00:29:00 [INFO ] user:35 - agent javac connected
+2019-06-10 00:40:08 [ERROR] user:29 - Connection reset
+2019-06-10 00:51:30 [INFO ] user:14 - start application
+2019-06-10 00:52:03 [INFO ] user:35 - agent Javac1 connected
+2019-06-10 00:57:30 [INFO ] user:14 - start application
+2019-06-10 00:57:47 [INFO ] user:20 - client jjj connected
+2019-06-10 00:58:17 [ERROR] user:30 - Connection reset
+2019-06-10 16:02:08 [INFO ] user:14 - start application
+2019-06-10 16:02:21 [INFO ] user:20 - client javac connected
+2019-06-10 16:02:25 [ERROR] user:30 - Connection reset
+2019-06-13 22:04:15 [INFO ] user:14 - start application
+2019-06-13 22:04:23 [ERROR] user:47 - Connection refused: connect
+2019-06-13 22:04:23 [INFO ] user:51 - agent Java disconnected
+2019-06-13 22:04:57 [INFO ] user:14 - start application
+2019-06-13 22:05:05 [INFO ] user:35 - agent Java connected
+2019-06-13 22:05:42 [INFO ] user:14 - start application
+2019-06-13 22:05:59 [INFO ] user:14 - start application
+2019-06-13 22:06:05 [INFO ] user:20 - client Javac connected
+2019-06-13 22:06:14 [INFO ] user:35 - agent Java connected
+2019-06-13 22:06:23 [INFO ] user:36 - client Javac disconnected
+2019-06-13 22:06:44 [INFO ] user:14 - start application
+2019-06-13 22:07:31 [INFO ] user:20 - client javac connected
+2019-06-13 22:07:52 [ERROR] user:30 - Connection reset
+2019-06-13 22:07:57 [INFO ] user:14 - start application
+2019-06-13 22:08:05 [INFO ] user:14 - start application
+2019-06-13 22:08:12 [INFO ] user:35 - agent javac connected
+2019-06-13 22:08:19 [INFO ] user:20 - client javac1 connected
