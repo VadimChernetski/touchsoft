@@ -75,6 +75,14 @@ var colors = [
             socket.send(JSON.stringify(msg));
             registrationForm.classList.add('hidden');
             chatForm.classList.remove('hidden');
+            if(inputData[0] === "agent"){
+            var msgPresentation = document.createElement('li');
+            var contextElement = document.createElement('p');
+            contextElement.appendChild(document.createTextNode("Сообщения не будут отправлены, пока клиент не присоеденится"));
+            msgPresentation.appendChild(contextElement);
+            messageArea.appendChild(msgPresentation);
+            messageArea.scrollTop = messageArea.scrollHeight;
+            }
             event.preventDefault();
         } else {
             alert("incorrect data");
