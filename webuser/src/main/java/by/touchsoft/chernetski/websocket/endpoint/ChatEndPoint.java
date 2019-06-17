@@ -30,7 +30,7 @@ public class ChatEndPoint {
 
     @OnClose
     public void onClose(Session session) {
-
+        session = null;
     }
 
     @OnMessage
@@ -38,6 +38,10 @@ public class ChatEndPoint {
         if (connectionStatus) {
             connector.sendMessage(handleMessage(message));
             session.getBasicRemote().sendObject(message);
+            if(message.getContext().equals("/exit")){
+                connectionStatus = false;
+                connector = null;
+            }
         } else {
             registration(message);
         }
@@ -45,7 +49,7 @@ public class ChatEndPoint {
 
     @OnError
     public void onError(Session session, Throwable e) {
-        e.printStackTrace();
+        logger.error(e.getMessage());
     }
 
     public void sendMessage(Message message) {
@@ -57,10 +61,12 @@ public class ChatEndPoint {
     }
 
     private void registration(Message message) {
-        connector = new Connector(this, logger, message.getContext());
-        connector.start();
-        connector.sendMessage(message.toString());
-        connectionStatus = true;
+        if(checkRegistrationData(message)) {
+            connector = new Connector(this, logger, message.getContext());
+            connector.start();
+            connector.sendMessage(message.toString());
+            connectionStatus = true;
+        }
     }
 
     private String handleMessage(Message message) {
@@ -79,5 +85,10 @@ public class ChatEndPoint {
                 break;
         }
         return result;
+    }
+
+    private boolean checkRegistrationData(Message message){
+        String input = message.toString();
+        return input.matches("/register (agent|client) [A-z0-9]*");
     }
 }

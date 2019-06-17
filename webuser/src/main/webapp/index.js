@@ -99,6 +99,10 @@ var colors = [
             socket.send(JSON.stringify(msg));
         }
         messageInput.value = "";
+        if(context === "/exit"){
+                    registrationForm.classList.remove('hidden');
+                    chatForm.classList.add('hidden');
+                }
     }
  }
 

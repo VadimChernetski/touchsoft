@@ -17,8 +17,8 @@ public class Registration {
     }
 
     public String register() {
+        System.out.print("Register please\n");
         while (true) {
-            System.out.print("Register please\n");
             registerMessage = scanner.nextLine();
             String[] clientData = registerMessage.split(" ");
             if (checkRegistrationCommand(registerMessage)) {
@@ -33,12 +33,7 @@ public class Registration {
     }
 
     private boolean checkRegistrationCommand(String command) {
-        Matcher matcher = UserConstants.PATTERN_REGISTRATION.matcher(command);
-        String registrationCommand = "";
-        if (matcher.find()) {
-            registrationCommand = matcher.group();
-        }
-        return command.equals(registrationCommand);
+        return command.matches(UserConstants.PATTERN_REGISTRATION);
     }
 
     public String getName() {
