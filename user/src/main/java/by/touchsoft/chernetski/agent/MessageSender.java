@@ -9,14 +9,31 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ *  Class for sending messages to server
+ * @author Vadim Chernetski
+ */
 public class MessageSender extends Thread{
 
+    /** Stream sending messages */
     private BufferedWriter out;
+    /** message templates */
     private List<String> responseTemplates;
+    /** Log4j instance */
     private Logger logger;
+    /** Scanner instance */
     private Scanner scanner;
+    /** Name of agent */
     private String name;
 
+    /**
+     * Constructor
+     * @param scanner - Scanner instance
+     * @param out - stream sending messages
+     * @param name - name of client
+     * @param responseTemplates - message templates
+     * @param logger - Log4j instance
+     */
     public MessageSender(Scanner scanner, BufferedWriter out, String name, List<String> responseTemplates, Logger logger){
         this.responseTemplates = responseTemplates;
         this.out = out;
@@ -25,6 +42,9 @@ public class MessageSender extends Thread{
         this.logger = logger;
     }
 
+    /**
+     * Method for starting thread, that sends messages
+     */
     @Override
     public void run() {
         LocalTime time;

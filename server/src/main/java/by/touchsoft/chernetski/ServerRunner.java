@@ -8,8 +8,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Class which starts server for console and web chats
+ * @author Vadim Chernetski
+ */
 public class ServerRunner {
 
+    /**
+     * main method of server. It creates ServerSocket, accept connections.
+     */
     public static void main(String[] args) {
         Logger logger = Logger.getLogger("Server");
         logger.info("Server start");

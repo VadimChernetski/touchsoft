@@ -5,6 +5,8 @@ var registrationInput = document.querySelector('#name');
 var registrationForm = document.querySelector('#username-page');
 var chatForm = document.querySelector('#chat-page');
 var messageArea = document.querySelector('#messageArea');
+var leave = document.querySelector('#leave');
+var userRole = document.getElementsByName('role');
 var userName = null;
 var socket = null;
 var userColor = null;
@@ -49,6 +51,7 @@ var colors = [
         }
         var msgPresentation = document.createElement('li');
         msgPresentation.classList.add('chat-message');
+        if(name !== "server"){
         var avatar = document.createElement('i');
         var userFirstLetter = document.createTextNode(name.charAt(0));
         avatar.appendChild(userFirstLetter);
@@ -57,6 +60,7 @@ var colors = [
         var nameElement = document.createElement('span');
         nameElement.appendChild(document.createTextNode(name));
         msgPresentation.appendChild(nameElement);
+        }
         var contextElement = document.createElement('p');
         contextElement.appendChild(document.createTextNode(context));
         msgPresentation.appendChild(contextElement);
@@ -65,17 +69,24 @@ var colors = [
     }
 
     registration.onclick = function(event) {
-        var input = registrationInput.value.trim();
-        if (input.match("(client)|(agent) [A-z0-9]+")){
-            var inputData = input.split(" ");
-            userName = inputData[1];
+    	var role;
+    	var selectRole = false;
+    	for(var i = 0; i < 2; i++){
+    		if(userRole[i].checked){
+    			role = userRole[i].value;
+    			selectRole = true;
+    		}
+    	}
+        userName = registrationInput.value.trim();
+    	if(selectRole && userName !== ""){
             var msg = new Object();
             msg.context = userName;
-            msg.name = "/register " + inputData[0];
+            msg.name = "/register " + role + " ";
             socket.send(JSON.stringify(msg));
             registrationForm.classList.add('hidden');
             chatForm.classList.remove('hidden');
-            if(inputData[0] === "agent"){
+            if(role === "agent"){
+            leave.classList.add('hidden');
             var msgPresentation = document.createElement('li');
             var contextElement = document.createElement('p');
             contextElement.appendChild(document.createTextNode("Сообщения не будут отправлены, пока клиент не присоеденится"));
@@ -85,8 +96,17 @@ var colors = [
             }
             event.preventDefault();
         } else {
-            alert("incorrect data");
+        	alert("You didn't enter name or choose role");
         }
+    }
+
+    leave.onclick = function(event){
+        event.preventDefault();
+        var msg = new Object();
+        msg.name = userName;
+        msg.context = "/leave";
+        socket.send(JSON.stringify(msg));
+        alert("You disconnected from agent.");
     }
 
     sendMsg.onclick = function(event) {
@@ -100,9 +120,9 @@ var colors = [
         }
         messageInput.value = "";
         if(context === "/exit"){
-                    registrationForm.classList.remove('hidden');
-                    chatForm.classList.add('hidden');
-                }
+            registrationForm.classList.remove('hidden');
+            chatForm.classList.add('hidden');
+        }
     }
  }
 

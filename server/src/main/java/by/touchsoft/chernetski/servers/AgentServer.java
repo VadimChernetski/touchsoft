@@ -11,19 +11,30 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Optional;
 
-
+/**
+ * Class that works with agent's messages
+ * @author Vadim Chernetski
+ */
 public class AgentServer extends Thread implements  UserServer{
 
+    /** Field that displays connection with client */
     @Setter
     private boolean connectionStatus;
+    /** Stream receiving messages */
     private BufferedReader in;
+    /** Stream sending messages */
     private BufferedWriter out;
+    /** Log4j logger */
     private Logger logger;
+    /** Instance of client */
     @Setter @Getter
     private Optional<ClientServer> client;
+    /** Name of current agent */
     @Getter
     private String agentName;
+    /** Socket for interaction with chat application */
     private Socket socket;
+    /** Instance of Users class */
     private Users users;
 
     public AgentServer(BufferedReader in, BufferedWriter out, Socket socket, Users users, String name, Logger logger) {
@@ -37,6 +48,9 @@ public class AgentServer extends Thread implements  UserServer{
         connectionStatus = false;
     }
 
+    /**
+     * Method for starting thread
+     */
     @Override
     public void run() {
         users.addUser(this);
@@ -62,6 +76,10 @@ public class AgentServer extends Thread implements  UserServer{
         }
     }
 
+    /**
+     * Method sends message to companion
+     * @param message - context of message
+     */
     @Override
     public void sendMessage(String message) {
         try {
@@ -72,6 +90,9 @@ public class AgentServer extends Thread implements  UserServer{
         }
     }
 
+    /**
+     * Method that stops agent
+     */
     private void exit() {
         try {
             out.write("/exit\n");

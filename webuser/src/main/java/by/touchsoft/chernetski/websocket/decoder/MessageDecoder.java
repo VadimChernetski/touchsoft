@@ -7,8 +7,13 @@ import com.google.gson.GsonBuilder;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
+/**
+ * Implementation of javax.websocket.Decoder
+ * @author Vadim Chernetski
+ */
 public class MessageDecoder implements Decoder.Text<Message> {
 
+    /** Gson instance */
     private Gson json = new GsonBuilder().create();
 
     @Override

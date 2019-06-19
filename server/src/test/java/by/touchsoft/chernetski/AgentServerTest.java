@@ -32,26 +32,4 @@ public class AgentServerTest {
         }
         assertEquals(expected, actual);
     }
-
-    @Test
-    void checkCorrectExit(){
-        File testFile = new File("test.txt");
-        Logger logger = Logger.getLogger("test");
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(testFile));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream("/exit\n".getBytes())));
-            AgentServer agent = new AgentServer(reader, writer, new Socket(), new Users(logger), "Test", logger);
-            agent.start();
-            assertTrue(agent.isAlive());
-            Thread.currentThread().sleep(250);
-            assertTrue(!agent.isAlive());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        } catch (InterruptedException exception){
-            exception.printStackTrace();
-        }
-        if (testFile.exists()) {
-            testFile.delete();
-        }
-    }
 }

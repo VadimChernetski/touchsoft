@@ -13,22 +13,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Class that works with client's messages
+ * @author Vadim Chernetski
+ */
 public class ClientServer extends Thread implements UserServer {
 
+    /** Field that displays connection with agent */
     @Setter
     private boolean connectionStatus;
+    /** Stream receiving messages */
     private BufferedReader in;
+    /** Stream sending messages */
     private BufferedWriter out;
+    /** All messages that wasn't sent until client didn't connect to agent */
     @Setter
     private List<String> messagesBeforeAgentConnect;
+    /** Log4j logger */
     private Logger logger;
-    @Getter
-    @Setter
+    /** Instance of agent */
+    @Getter @Setter
     private Optional<AgentServer> agent;
+    /** Name of current client */
     @Getter
     private String clientName;
+    /** Socket for interaction with chat application */
     private Socket socket;
+    /** Instance of Users class */
     private Users users;
 
     public ClientServer(BufferedReader in, BufferedWriter out, Socket socket, Users users, String name, Logger loger) {
@@ -43,6 +54,9 @@ public class ClientServer extends Thread implements UserServer {
         messagesBeforeAgentConnect = new LinkedList<>();
     }
 
+    /**
+     * Method for starting thread
+     */
     @Override
     public void run() {
         users.addUser(this);
@@ -77,6 +91,9 @@ public class ClientServer extends Thread implements UserServer {
         }
     }
 
+    /**
+     * Method sends all missed messages
+     */
     public void sendMessages() {
         StringBuilder history = new StringBuilder();
         if (!messagesBeforeAgentConnect.isEmpty()) {
@@ -94,6 +111,23 @@ public class ClientServer extends Thread implements UserServer {
         }
     }
 
+    /**
+     * Method sends message to companion
+     * @param message - context of message
+     */
+    @Override
+    public void sendMessage(String message) {
+        try {
+            out.write(message + "\n");
+            out.flush();
+        } catch (IOException exception) {
+            logger.error(exception.getMessage());
+        }
+    }
+
+    /**
+     * Method that stops client
+     */
     private void exit() {
         try {
             out.write("/exit\n");
@@ -108,16 +142,6 @@ public class ClientServer extends Thread implements UserServer {
             if (!socket.isClosed()) {
                 socket.close();
             }
-        } catch (IOException exception) {
-            logger.error(exception.getMessage());
-        }
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        try {
-            out.write(message + "\n");
-            out.flush();
         } catch (IOException exception) {
             logger.error(exception.getMessage());
         }

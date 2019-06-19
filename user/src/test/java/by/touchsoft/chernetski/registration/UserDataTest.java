@@ -7,15 +7,15 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RegistrationTest {
+public class UserDataTest {
 
     @Test
     void registerShouldReturnRoleIfInputCorrect() {
         ByteArrayInputStream in = new ByteArrayInputStream("/register client Java\n".getBytes());
         Scanner scanner = new Scanner(in);
-        Registration registration = new Registration(scanner);
+        UserData userData = new UserData(scanner);
         String expected = "client";
-        String actual = registration.register();
+        String actual = userData.register();
         assertEquals(expected, actual);
     }
 
@@ -27,11 +27,10 @@ public class RegistrationTest {
         PrintStream newOut = new PrintStream(byteOut);
         PrintStream oldOut = System.out;
         System.setOut(newOut);
-        Registration registration = new Registration(scanner);
+        UserData userData = new UserData(scanner);
         String expected = "Register please\n" +
-                "Wrong command, try again\n" +
-                "Register please\n";
-        registration.register();
+                "Wrong command, try again\n";
+        userData.register();
         System.setOut(oldOut);
         String actual = new String(byteOut.toByteArray());
         assertEquals(expected, actual);

@@ -8,13 +8,28 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Scanner;
 
+/**
+ *  Class for sending messages to server
+ * @author Vadim Chernetski
+ */
 public class MessageSender extends Thread {
 
+    /** Stream sending messages */
     private BufferedWriter out;
+    /** Log4j instance */
     private Logger logger;
+    /** Scanner instance */
     private Scanner scanner;
+    /** Name of client */
     private String name;
 
+    /**
+     * Constructor
+     * @param scanner - Scanner instance
+     * @param out - stream sending messages
+     * @param name - name of client
+     * @param logger - Log4j instance
+     */
     public MessageSender(Scanner scanner, BufferedWriter out, String name, Logger logger) {
         this.out = out;
         this.scanner = scanner;
@@ -22,6 +37,9 @@ public class MessageSender extends Thread {
         this.logger = logger;
     }
 
+    /**
+     * Method for starting thread, that sends messages
+     */
     @Override
     public void run() {
         String message;

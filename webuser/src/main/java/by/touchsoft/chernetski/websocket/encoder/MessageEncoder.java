@@ -7,6 +7,10 @@ import com.google.gson.GsonBuilder;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
+/**
+ * Implementation of javax.websocket.Encoder
+ * @author Vadim Chernetski
+ */
 public class MessageEncoder implements Encoder.Text<Message> {
 
     private Gson json = new GsonBuilder().create();

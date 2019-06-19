@@ -8,8 +8,18 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Class creates server-side users
+ * @author Vadim Chernetski
+ */
 public class ServerCreator {
 
+    /**
+     *  Method creates threads based on role of the user
+     * @param socket - socket accepted by server
+     * @param users - instance of Users class
+     * @param logger - instance of logger
+     */
     public static void CreateServer(Socket socket, Users users, Logger logger) {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
@@ -34,10 +44,20 @@ public class ServerCreator {
         }
     }
 
+    /**
+     * Method look for user's role
+     * @param message - message entered by user during registration
+     * @return user's role
+     */
     private static String getRole(String message){
         return message.split(" ")[1];
     }
 
+    /**
+     * Method look for user's name
+     * @param message - message entered by user during registration
+     * @return user's name
+     */
     private static String getName(String message){
         return message.split(" ")[2];
     }

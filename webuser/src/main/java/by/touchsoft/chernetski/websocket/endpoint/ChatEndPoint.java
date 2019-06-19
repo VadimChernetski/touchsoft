@@ -12,29 +12,48 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
+/**
+ * Endpoint for WebSocket
+ * @author Vadim Chernetski
+ */
 @ServerEndpoint(value = "/chat",
         encoders = MessageEncoder.class,
         decoders = MessageDecoder.class)
 public class ChatEndPoint {
 
+    /** status of connection to server*/
     private boolean connectionStatus = false;
+    /** Instance of Connector class */
     private Connector connector;
+    /** Instance of Log4j class */
     private Logger logger = Logger.getLogger("webApp");
+    /** Instance of Session class */
     @Getter @Setter
     private Session session;
 
+    /**
+     * Open ChatEndPoint
+     * @param session - Session that created when ChatEndPoint opens
+     */
     @OnOpen
     public void onOpen(Session session) {
         this.session = session;
     }
 
+    /**
+     * Close ChatEndPoint
+     */
     @OnClose
-    public void onClose(Session session) {
-        session = null;
+    public void onClose() {
+        this.session = null;
     }
 
+    /**
+     * Send message to the browser
+     * @param message - message that will send to the web
+     */
     @OnMessage
-    public void onMessage(Session session, Message message) throws IOException, EncodeException {
+    public void onMessage(Message message) throws IOException, EncodeException {
         if (connectionStatus) {
             connector.sendMessage(handleMessage(message));
             session.getBasicRemote().sendObject(message);
@@ -47,11 +66,19 @@ public class ChatEndPoint {
         }
     }
 
+    /**
+     * Handling error
+     * @param e - throwable
+     */
     @OnError
-    public void onError(Session session, Throwable e) {
+    public void onError(Throwable e) {
         logger.error(e.getMessage());
     }
 
+    /**
+     * Using for send message from connector
+     * @param message - message
+     */
     public void sendMessage(Message message) {
         try {
             session.getBasicRemote().sendObject(message);
@@ -60,15 +87,22 @@ public class ChatEndPoint {
         }
     }
 
+    /**
+     * Method create connector
+     * @param message - registration message
+     */
     private void registration(Message message) {
-        if(checkRegistrationData(message)) {
             connector = new Connector(this, logger, message.getContext());
             connector.start();
             connector.sendMessage(message.toString());
             connectionStatus = true;
-        }
     }
 
+    /**
+     * looking for commands in massage
+     * @param message - message
+     * @return handled message
+     */
     private String handleMessage(Message message) {
         String result;
         String context = message.getContext();
@@ -85,10 +119,5 @@ public class ChatEndPoint {
                 break;
         }
         return result;
-    }
-
-    private boolean checkRegistrationData(Message message){
-        String input = message.toString();
-        return input.matches("/register (agent|client) [A-z0-9]*");
     }
 }

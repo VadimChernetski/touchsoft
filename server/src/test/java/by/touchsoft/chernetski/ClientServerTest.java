@@ -37,7 +37,7 @@ public class ClientServerTest {
     }
 
     @Test
-    void sendMessageShouldWriteOutInputMessagesThatClientType() {
+    void sendMessagesShouldWriteOutInputMessages() {
         List<String> message = new ArrayList<>();
         message.add("first message");
         message.add("second message");

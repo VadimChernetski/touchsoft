@@ -13,17 +13,33 @@ import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class for connecting to server
+ * @author Vadim Chernetski
+ */
 @NoArgsConstructor
 public class Connector extends Thread {
 
+    /** Stream receiving messages */
     private BufferedReader in;
+    /** Stream sending messages */
     @Setter
     private BufferedWriter out;
+    /** WebSocket endpoint */
     private ChatEndPoint endPoint;
+    /** Log4j instance */
     private Logger logger;
+    /** Name of user */
     private String name;
+    /** Socket for connection with server */
     private Socket socket;
 
+    /**
+     * Constructor
+     * @param endPoint - WebSocket endpoint
+     * @param logger - Log4j instance
+     * @param name - name of user
+     */
     public Connector(ChatEndPoint endPoint, Logger logger, String name){
         this.endPoint = endPoint;
         this.name = name;
@@ -38,6 +54,9 @@ public class Connector extends Thread {
         }
     }
 
+    /**
+     * Method for starting thread, that receives messages
+     */
     @Override
     public void run() {
         String input;
@@ -68,6 +87,10 @@ public class Connector extends Thread {
         }
     }
 
+    /**
+     * Method sends messages to server
+     * @param message - message context
+     */
     public void sendMessage(String message){
         try {
             out.write(message + "\n");
@@ -77,6 +100,9 @@ public class Connector extends Thread {
         }
     }
 
+    /**
+     * Method stops work of user
+     */
     private void exit(){
         logger.info(name + " exit");
         try {
