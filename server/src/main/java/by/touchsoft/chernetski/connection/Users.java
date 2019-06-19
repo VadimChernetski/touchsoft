@@ -109,6 +109,7 @@ public class Users {
             agent.get().setConnectionStatus(false);
             agent.get().setClient(Optional.empty());
             synchronized (monitor) {
+                freeClients.addLast(client);
                 freeAgents.offer(agent.get());
                 monitor.notify();
             }
