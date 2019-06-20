@@ -52,6 +52,7 @@ public class ClientServer extends Thread implements UserServer {
         agent = Optional.empty();
         connectionStatus = false;
         messagesBeforeAgentConnect = new LinkedList<>();
+        this.sendMessage("waiting for agent");
     }
 
     /**

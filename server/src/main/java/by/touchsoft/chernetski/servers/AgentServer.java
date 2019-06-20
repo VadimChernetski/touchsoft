@@ -46,6 +46,7 @@ public class AgentServer extends Thread implements  UserServer{
         this.logger = logger;
         client = Optional.empty();
         connectionStatus = false;
+        this.sendMessage("waiting for client");
     }
 
     /**
