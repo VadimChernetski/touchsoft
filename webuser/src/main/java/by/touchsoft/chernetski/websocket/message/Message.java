@@ -18,6 +18,7 @@ public class Message {
     /** Message context */
     @Getter @Setter
     private String context;
+
     /** Name of user */
     @Getter @Setter
     private String name;

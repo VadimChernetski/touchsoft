@@ -16,12 +16,15 @@ public class Users {
 
     /** Monitor that used for thread safe operations */
     private static final String monitor = "monitor";
+
     /** Queue of free agents */
     @Getter @Setter
     private Queue<AgentServer> freeAgents = new LinkedList<>();
+
     /** Queue of clients */
     @Getter @Setter
     private Deque<ClientServer> freeClients = new LinkedList<>();
+
     /** Log4j instance */
     private Logger logger;
 

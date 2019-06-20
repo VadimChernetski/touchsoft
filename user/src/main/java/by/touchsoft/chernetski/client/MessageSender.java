@@ -16,10 +16,13 @@ public class MessageSender extends Thread {
 
     /** Stream sending messages */
     private BufferedWriter out;
+
     /** Log4j instance */
     private Logger logger;
+
     /** Scanner instance */
     private Scanner scanner;
+
     /** Name of client */
     private String name;
 

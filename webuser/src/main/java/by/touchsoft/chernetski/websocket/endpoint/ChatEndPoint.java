@@ -23,10 +23,13 @@ public class ChatEndPoint {
 
     /** status of connection to server*/
     private boolean connectionStatus = false;
+
     /** Instance of Connector class */
     private Connector connector;
+
     /** Instance of Log4j class */
     private Logger logger = Logger.getLogger("webApp");
+
     /** Instance of Session class */
     @Getter @Setter
     private Session session;

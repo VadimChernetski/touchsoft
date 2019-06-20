@@ -22,15 +22,20 @@ public class Connector extends Thread {
 
     /** Stream receiving messages */
     private BufferedReader in;
+
     /** Stream sending messages */
     @Setter
     private BufferedWriter out;
+
     /** WebSocket endpoint */
     private ChatEndPoint endPoint;
+
     /** Log4j instance */
     private Logger logger;
+
     /** Name of user */
     private String name;
+
     /** Socket for connection with server */
     private Socket socket;
 

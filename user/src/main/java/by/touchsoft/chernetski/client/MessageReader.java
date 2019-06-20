@@ -14,6 +14,7 @@ public class MessageReader extends Thread{
 
     /** Stream receiving messages */
     private BufferedReader in;
+
     /** Log4j instance */
     private Logger logger;
 
