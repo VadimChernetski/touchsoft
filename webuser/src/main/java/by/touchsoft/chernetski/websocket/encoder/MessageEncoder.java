@@ -9,11 +9,14 @@ import javax.websocket.EndpointConfig;
 
 /**
  * Implementation of javax.websocket.Encoder
+ *
  * @author Vadim Chernetski
  */
 public class MessageEncoder implements Encoder.Text<Message> {
 
-    /** Gson instance */
+    /**
+     * Gson instance
+     */
     private Gson json = new GsonBuilder().create();
 
     @Override

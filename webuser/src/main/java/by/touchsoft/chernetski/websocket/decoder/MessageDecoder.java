@@ -9,15 +9,18 @@ import javax.websocket.EndpointConfig;
 
 /**
  * Implementation of javax.websocket.Decoder
+ *
  * @author Vadim Chernetski
  */
 public class MessageDecoder implements Decoder.Text<Message> {
 
-    /** Gson instance */
+    /**
+     * Gson instance
+     */
     private Gson json = new GsonBuilder().create();
 
     @Override
-    public Message decode(String s){
+    public Message decode(String s) {
         return json.fromJson(s, Message.class);
     }
 

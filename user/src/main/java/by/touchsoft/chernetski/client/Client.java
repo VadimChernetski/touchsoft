@@ -11,16 +11,18 @@ import java.util.Scanner;
 
 /**
  * Class for user with role Client
+ *
  * @author Vadim Chernetski
  */
 public class Client {
 
     /**
      * Constructor. In this constructor starts threads for reading and writing messages
-     * @param name - name of User
+     *
+     * @param name                - name of User
      * @param registrationMessage - user input during registration
-     * @param scanner - instance of Scanner class
-     * @param logger - instance of Log4j class
+     * @param scanner             - instance of Scanner class
+     * @param logger              - instance of Log4j class
      */
     public Client(String name, String registrationMessage, Scanner scanner, Logger logger) {
         try (Socket socket = new Socket(InetAddress.getByName(UserConstants.ID), UserConstants.PORT);
@@ -41,7 +43,7 @@ public class Client {
             logger.error(exception.getMessage());
         } catch (IOException exception) {
             logger.error(exception.getMessage());
-        } catch (InterruptedException exception){
+        } catch (InterruptedException exception) {
             logger.error(exception.getMessage());
         }
         logger.info("client " + name + " disconnected");

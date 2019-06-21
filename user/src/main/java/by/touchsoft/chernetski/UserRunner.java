@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * Class which starts console chat application
+ *
  * @author Vadim Chernetski
  */
 public class UserRunner {
@@ -23,7 +24,7 @@ public class UserRunner {
         Scanner scanner = new Scanner(System.in, "UTF-8");
         UserData userData = new UserData(scanner);
         role = userData.register();
-        switch (role){
+        switch (role) {
             case "agent":
                 new Agent(userData.getName(), userData.getRegistrationMessage(), scanner, logger);
                 break;

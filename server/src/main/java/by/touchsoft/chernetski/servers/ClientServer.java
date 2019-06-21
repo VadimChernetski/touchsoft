@@ -15,44 +15,72 @@ import java.util.Optional;
 
 /**
  * Class that works with client's messages
+ *
  * @author Vadim Chernetski
  */
-public class ClientServer extends Thread implements UserServer {
+public class ClientServer extends Thread {
 
-    /** Field that displays connection with agent */
+    /**
+     * Field that displays connection with agent
+     */
     @Setter
     private boolean connectionStatus;
-    /** Stream receiving messages */
+
+    /**
+     * Stream receiving messages
+     */
     private BufferedReader in;
-    /** Stream sending messages */
+
+    /**
+     * Stream sending messages
+     */
     private BufferedWriter out;
-    /** All messages that wasn't sent until client didn't connect to agent */
-    @Setter
-    private List<String> messagesBeforeAgentConnect;
-    /** Log4j logger */
+
+    /**
+     * Log4j logger
+     */
     private Logger logger;
-    /** Instance of agent */
-    @Getter @Setter
+
+    /**
+     * Instance of agent
+     */
+    @Getter
+    @Setter
     private Optional<AgentServer> agent;
-    /** Name of current client */
+
+    /**
+     * Name of current client
+     */
     @Getter
     private String clientName;
-    /** Socket for interaction with chat application */
+
+    /**
+     * Socket for interaction with chat application
+     */
     private Socket socket;
-    /** Instance of Users class */
+
+    /**
+     * All messages that wasn't sent until client didn't connect to agent
+     */
+    @Setter
+    private StringBuilder messagesBeforeAgentConnect;
+
+    /**
+     * Instance of Users class
+     */
+    @Getter
     private Users users;
 
-    public ClientServer(BufferedReader in, BufferedWriter out, Socket socket, Users users, String name, Logger loger) {
+    public ClientServer(BufferedReader in, BufferedWriter out, Socket socket, String name, Logger loger) {
         this.in = in;
         this.out = out;
         this.socket = socket;
-        this.users = users;
+        this.users = Users.getInstance(logger);
         this.clientName = name;
         this.logger = loger;
         agent = Optional.empty();
         connectionStatus = false;
-        messagesBeforeAgentConnect = new LinkedList<>();
-        this.sendMessage("waiting for agent");
+        messagesBeforeAgentConnect = new StringBuilder();
     }
 
     /**
@@ -60,13 +88,12 @@ public class ClientServer extends Thread implements UserServer {
      */
     @Override
     public void run() {
-        users.addUser(this);
         String message;
         while (true) {
             try {
                 message = in.readLine();
                 if (message.equals("/leave")) {
-                    if(connectionStatus) {
+                    if (connectionStatus) {
                         users.disconnectClient(this);
                         continue;
                     } else {
@@ -81,8 +108,7 @@ public class ClientServer extends Thread implements UserServer {
                     sendMessages();
                     agent.get().sendMessage(message);
                 } else {
-                    users.addUser(this);
-                    messagesBeforeAgentConnect.add(message);
+                    messagesBeforeAgentConnect.append(message).append("\n");
                 }
             } catch (IOException exception) {
                 users.userExit(this);
@@ -96,27 +122,20 @@ public class ClientServer extends Thread implements UserServer {
      * Method sends all missed messages
      */
     public void sendMessages() {
-        StringBuilder history = new StringBuilder();
-        if (!messagesBeforeAgentConnect.isEmpty()) {
-            int messagesCount = messagesBeforeAgentConnect.size();
-            for (int i = 0; i < messagesCount; i++) {
-                if(i == messagesCount - 1){
-                    history.append(messagesBeforeAgentConnect.get(i));
-                } else {
-                    history.append(messagesBeforeAgentConnect.get(i)).append("\n");
-                }
-            }
-            messagesBeforeAgentConnect.clear();
-            history.subSequence(history.length()-2, history.length()-1);
-            agent.get().sendMessage(history.toString());
+        if ((messagesBeforeAgentConnect.length() > 0) && agent.isPresent()) {
+            String history = messagesBeforeAgentConnect.toString();
+            history = history.substring(0,history.length()-1);
+            messagesBeforeAgentConnect = new StringBuilder();
+            agent.get().sendMessage(history);
         }
     }
 
     /**
      * Method sends message to companion
+     *
      * @param message - context of message
      */
-    @Override
+
     public void sendMessage(String message) {
         try {
             out.write(message + "\n");
@@ -134,12 +153,6 @@ public class ClientServer extends Thread implements UserServer {
             out.write("/exit\n");
             out.flush();
             users.userExit(this);
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
             if (!socket.isClosed()) {
                 socket.close();
             }

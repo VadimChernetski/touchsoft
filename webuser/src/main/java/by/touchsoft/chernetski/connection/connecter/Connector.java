@@ -15,37 +15,51 @@ import java.util.regex.Pattern;
 
 /**
  * Class for connecting to server
+ *
  * @author Vadim Chernetski
  */
 @NoArgsConstructor
 public class Connector extends Thread {
 
-    /** Stream receiving messages */
+    /**
+     * Stream receiving messages
+     */
     private BufferedReader in;
 
-    /** Stream sending messages */
+    /**
+     * Stream sending messages
+     */
     @Setter
     private BufferedWriter out;
 
-    /** WebSocket endpoint */
+    /**
+     * WebSocket endpoint
+     */
     private ChatEndPoint endPoint;
 
-    /** Log4j instance */
+    /**
+     * Log4j instance
+     */
     private Logger logger;
 
-    /** Name of user */
+    /**
+     * Name of user
+     */
     private String name;
 
-    /** Socket for connection with server */
+    /**
+     * Socket for connection with server
+     */
     private Socket socket;
 
     /**
      * Constructor
+     *
      * @param endPoint - WebSocket endpoint
-     * @param logger - Log4j instance
-     * @param name - name of user
+     * @param logger   - Log4j instance
+     * @param name     - name of user
      */
-    public Connector(ChatEndPoint endPoint, Logger logger, String name){
+    public Connector(ChatEndPoint endPoint, Logger logger, String name) {
         this.endPoint = endPoint;
         this.name = name;
         this.logger = logger;
@@ -55,7 +69,7 @@ public class Connector extends Thread {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
             this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error(exception.getMessage());
         }
     }
 
@@ -69,15 +83,16 @@ public class Connector extends Thread {
         Pattern pattern = Pattern.compile("[A-z]+ (?=\\()");
         Message message;
         String name;
-        while(true){
+        while (true) {
+            System.out.println("start" + this.name);
             try {
                 input = in.readLine();
-                if(input.equals("/exit")){
+                if (input.equals("/exit")) {
                     exit();
                     break;
                 }
                 matcher = pattern.matcher(input);
-                if(matcher.find()) {
+                if (matcher.find()) {
                     name = matcher.group();
                     message = new Message(input.replaceAll(name, ""), name);
                 } else {
@@ -94,9 +109,10 @@ public class Connector extends Thread {
 
     /**
      * Method sends messages to server
+     *
      * @param message - message context
      */
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         try {
             out.write(message + "\n");
             out.flush();
@@ -108,15 +124,9 @@ public class Connector extends Thread {
     /**
      * Method stops work of user
      */
-    private void exit(){
+    private void exit() {
         logger.info(name + " exit");
         try {
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
             if (!socket.isClosed()) {
                 socket.close();
             }

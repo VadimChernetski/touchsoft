@@ -14,6 +14,7 @@ import java.io.IOException;
 
 /**
  * Endpoint for WebSocket
+ *
  * @author Vadim Chernetski
  */
 @ServerEndpoint(value = "/chat",
@@ -21,21 +22,31 @@ import java.io.IOException;
         decoders = MessageDecoder.class)
 public class ChatEndPoint {
 
-    /** status of connection to server*/
+    /**
+     * status of connection to server
+     */
     private boolean connectionStatus = false;
 
-    /** Instance of Connector class */
+    /**
+     * Instance of Connector class
+     */
     private Connector connector;
 
-    /** Instance of Log4j class */
+    /**
+     * Instance of Log4j class
+     */
     private Logger logger = Logger.getLogger("webApp");
 
-    /** Instance of Session class */
-    @Getter @Setter
+    /**
+     * Instance of Session class
+     */
+    @Getter
+    @Setter
     private Session session;
 
     /**
      * Open ChatEndPoint
+     *
      * @param session - Session that created when ChatEndPoint opens
      */
     @OnOpen
@@ -53,6 +64,7 @@ public class ChatEndPoint {
 
     /**
      * Send message to the browser
+     *
      * @param message - message that will send to the web
      */
     @OnMessage
@@ -60,7 +72,7 @@ public class ChatEndPoint {
         if (connectionStatus) {
             connector.sendMessage(handleMessage(message));
             session.getBasicRemote().sendObject(message);
-            if(message.getContext().equals("/exit")){
+            if (message.getContext().equals("/exit")) {
                 connectionStatus = false;
                 connector = null;
             }
@@ -71,6 +83,7 @@ public class ChatEndPoint {
 
     /**
      * Handling error
+     *
      * @param e - throwable
      */
     @OnError
@@ -80,6 +93,7 @@ public class ChatEndPoint {
 
     /**
      * Using for send message from connector
+     *
      * @param message - message
      */
     public void sendMessage(Message message) {
@@ -92,17 +106,21 @@ public class ChatEndPoint {
 
     /**
      * Method create connector
+     *
      * @param message - registration message
      */
     private void registration(Message message) {
+        if (!message.getName().isEmpty() && !message.getContext().isEmpty()) {
             connector = new Connector(this, logger, message.getContext());
             connector.start();
             connector.sendMessage(message.toString());
             connectionStatus = true;
+        }
     }
 
     /**
      * looking for commands in massage
+     *
      * @param message - message
      * @return handled message
      */

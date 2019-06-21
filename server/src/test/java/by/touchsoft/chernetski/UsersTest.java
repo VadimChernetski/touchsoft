@@ -4,10 +4,12 @@ import by.touchsoft.chernetski.connection.Users;
 import by.touchsoft.chernetski.servers.AgentServer;
 import by.touchsoft.chernetski.servers.ClientServer;
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -18,33 +20,45 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UsersTest {
 
-    Users users;
+    static Users users;
+
+    @BeforeAll
+    public static void createUsers(){
+        users = Users.getInstance(Logger.getLogger("test"));
+    }
 
     @BeforeEach
     public void initUsers() {
-        users = new Users(Logger.getLogger("server"));
         users.setFreeAgents(new LinkedList<>());
         users.setFreeClients(new LinkedList<>());
     }
 
     @Test
     void addUserShouldPutAgentToQueue() {
-        AgentServer agent = new AgentServer(null, null, null, null, "Cooper", null);
-        Queue<AgentServer> expected = new LinkedList<>();
-        expected.offer(agent);
-        users.addUser(agent);
-        Queue<AgentServer> actual = users.getFreeAgents();
-        assertEquals(expected, actual);
+        try (BufferedWriter out = new BufferedWriter(new StringWriter())) {
+            AgentServer agent = new AgentServer(null, out, null, "Cooper", Logger.getLogger("test"));
+            Queue<AgentServer> expected = new LinkedList<>();
+            expected.offer(agent);
+            users.addUser(agent);
+            Queue<AgentServer> actual = users.getFreeAgents();
+            assertEquals(expected, actual);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Test
     void addUserShouldPutClientToQueue() {
-        ClientServer client = new ClientServer(null, null, null, null, "Alice", null);
-        Deque<ClientServer> expected = new LinkedList<>();
-        expected.addLast(client);
-        users.addUser(client);
-        Deque<ClientServer> actual = users.getFreeClients();
-        assertEquals(expected, actual);
+        try (BufferedWriter out = new BufferedWriter(new StringWriter())) {
+            ClientServer client = new ClientServer(null, out, null, "Alice", Logger.getLogger("test"));
+            Deque<ClientServer> expected = new LinkedList<>();
+            expected.addLast(client);
+            users.addUser(client);
+            Deque<ClientServer> actual = users.getFreeClients();
+            assertEquals(expected, actual);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Test
@@ -60,8 +74,8 @@ public class UsersTest {
     @Test
     void exitUserShouldPutClientToQueue() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
-        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        ClientServer client = new ClientServer(null, out, null, "Cooper", null);
+        AgentServer agent = new AgentServer(null, out, null, "Alice", null);
         agent.setClient(Optional.of(client));
         Deque<ClientServer> expected = new LinkedList<>();
         expected.addFirst(client);
@@ -74,8 +88,8 @@ public class UsersTest {
     @Test
     void exitUserShouldPutAgentToDeque() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
-        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        ClientServer client = new ClientServer(null, out, null, "Cooper", null);
+        AgentServer agent = new AgentServer(null, out, null, "Alice", null);
         client.setAgent(Optional.of(agent));
         Queue<AgentServer> expected = new LinkedList<>();
         expected.offer(agent);
@@ -98,7 +112,7 @@ public class UsersTest {
     @Test
     void exitUserShouldNotPutAgentToDequeIfItIsNull() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
+        ClientServer client = new ClientServer(null, out, null, "Cooper", null);
         Queue<AgentServer> expected = new LinkedList<>();
         users.userExit(client);
         Queue<AgentServer> actual = users.getFreeAgents();
@@ -108,7 +122,7 @@ public class UsersTest {
     @Test
     void exitUserShouldNotPutClientToQueueIfItIsNull() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        AgentServer agent = new AgentServer(null, out, null, "Alice", null);
         Deque<ClientServer> expected = new LinkedList<>();
         users.userExit(agent);
         Deque<ClientServer> actual = users.getFreeClients();
@@ -118,8 +132,8 @@ public class UsersTest {
     @Test
     void disconnectClientShouldDissconectClientFromAgent() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
-        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        ClientServer client = new ClientServer(null, out, null,"Cooper", null);
+        AgentServer agent = new AgentServer(null, out, null, "Alice", null);
         client.setAgent(Optional.of(agent));
         agent.setClient(Optional.of(client));
         Queue<AgentServer> expectedQueue = new LinkedList<>();
@@ -137,8 +151,8 @@ public class UsersTest {
     @Test
     void tryToConnectShouldConnectAgentAndClientIfTheyFree() {
         BufferedWriter out = new BufferedWriter(new StringWriter());
-        ClientServer client = new ClientServer(null, out, null, null, "Cooper", null);
-        AgentServer agent = new AgentServer(null, out, null, null, "Alice", null);
+        ClientServer client = new ClientServer(null, out, null, "Cooper", null);
+        AgentServer agent = new AgentServer(null, out, null, "Alice", null);
         users.addUser(agent);
         users.addUser(client);
         users.tryToConnect();

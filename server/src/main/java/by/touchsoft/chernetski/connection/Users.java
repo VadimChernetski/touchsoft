@@ -14,6 +14,9 @@ import java.util.*;
  */
 public class Users {
 
+    /** Instance of Users class */
+    private static volatile Users instance;
+
     /** Monitor that used for thread safe operations */
     private static final String monitor = "monitor";
 
@@ -26,16 +29,37 @@ public class Users {
     private Deque<ClientServer> freeClients = new LinkedList<>();
 
     /** Log4j instance */
+    @Setter
     private Logger logger;
+
+    {
+        Thread connector = new Thread(() -> {
+            while(true) {
+                this.tryToConnect();
+            }
+        });
+        connector.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
+        connector.start();
+    }
 
     /**
      * Constructor
      * @param logger - Log4j instance
      */
-    public Users(Logger logger) {
+    private Users(Logger logger) {
         this.logger = logger;
     }
 
+    public static Users getInstance(Logger logger){
+        if(instance == null){
+            synchronized (Users.class){
+                if(instance == null){
+                    instance = new Users(logger);
+                }
+            }
+        }
+        return instance;
+    }
     /**
      * Method adds agent to the queue
      * @param agent - AgentServer instance
@@ -45,10 +69,13 @@ public class Users {
         if (agent == null) {
             throw new IllegalArgumentException();
         }
+        agent.sendMessage("waiting for client");
         logger.info(agent.getAgentName() + " connected");
         synchronized (monitor) {
-            freeAgents.offer(agent);
-            monitor.notify();
+            if(!freeAgents.contains(agent)) {
+                freeAgents.offer(agent);
+                monitor.notify();
+            }
         }
     }
 
@@ -86,6 +113,7 @@ public class Users {
             throw new IllegalArgumentException();
         }
         logger.info("client " + client.getClientName() + " connected");
+        client.sendMessage("waiting for agent");
         synchronized (monitor) {
             if (!freeClients.contains(client)) {
                 freeClients.addLast(client);
@@ -108,6 +136,7 @@ public class Users {
         client.setConnectionStatus(false);
         Optional<AgentServer> agent = client.getAgent();
         if (agent.isPresent()) {
+            client.setAgent(Optional.empty());
             agent.get().sendMessage("Client disconnected");
             agent.get().setConnectionStatus(false);
             agent.get().setClient(Optional.empty());

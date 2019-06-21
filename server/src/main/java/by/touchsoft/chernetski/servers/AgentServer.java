@@ -13,40 +13,65 @@ import java.util.Optional;
 
 /**
  * Class that works with agent's messages
+ *
  * @author Vadim Chernetski
  */
-public class AgentServer extends Thread implements  UserServer{
+public class AgentServer extends Thread {
 
-    /** Field that displays connection with client */
+    /**
+     * Field that displays connection with client
+     */
     @Setter
     private boolean connectionStatus;
-    /** Stream receiving messages */
+
+    /**
+     * Stream receiving messages
+     */
     private BufferedReader in;
-    /** Stream sending messages */
+
+    /**
+     * Stream sending messages
+     */
     private BufferedWriter out;
-    /** Log4j logger */
+
+    /**
+     * Log4j logger
+     */
     private Logger logger;
-    /** Instance of client */
-    @Setter @Getter
+
+    /**
+     * Instance of client
+     */
+    @Setter
+    @Getter
     private Optional<ClientServer> client;
-    /** Name of current agent */
+
+    /**
+     * Name of current agent
+     */
     @Getter
     private String agentName;
-    /** Socket for interaction with chat application */
+
+    /**
+     * Socket for interaction with chat application
+     */
     private Socket socket;
-    /** Instance of Users class */
+
+    /**
+     * Instance of Users class
+     */
+    @Setter
     private Users users;
 
-    public AgentServer(BufferedReader in, BufferedWriter out, Socket socket, Users users, String name, Logger logger) {
+    public AgentServer(BufferedReader in, BufferedWriter out, Socket socket, String name, Logger logger) {
         this.in = in;
         this.out = out;
         this.socket = socket;
-        this.users = users;
+        this.users = Users.getInstance(logger);
         this.agentName = name;
         this.logger = logger;
         client = Optional.empty();
         connectionStatus = false;
-        this.sendMessage("waiting for client");
     }
 
     /**
@@ -54,7 +79,6 @@ public class AgentServer extends Thread implements  UserServer{
      */
     @Override
     public void run() {
-        users.addUser(this);
         String message;
         while (true) {
             try {
@@ -64,6 +88,7 @@ public class AgentServer extends Thread implements  UserServer{
                     break;
                 }
                 if (!connectionStatus) {
+                    this.sendMessage("wait for client");
                     continue;
                 }
                 if (client.isPresent()) {
@@ -79,9 +104,10 @@ public class AgentServer extends Thread implements  UserServer{
 
     /**
      * Method sends message to companion
+     *
      * @param message - context of message
      */
-    @Override
+
     public void sendMessage(String message) {
         try {
             out.write(message + "\n");
@@ -99,12 +125,6 @@ public class AgentServer extends Thread implements  UserServer{
             out.write("/exit\n");
             out.flush();
             users.userExit(this);
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
             if (!socket.isClosed()) {
                 socket.close();
             }

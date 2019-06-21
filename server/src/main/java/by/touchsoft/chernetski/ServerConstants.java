@@ -5,7 +5,9 @@ package by.touchsoft.chernetski;
  */
 public class ServerConstants {
 
-    /** server port */
+    /**
+     * server port
+     */
     public static final int PORT = 55555;
 
     private ServerConstants() {

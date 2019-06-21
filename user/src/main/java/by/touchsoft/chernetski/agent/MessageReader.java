@@ -7,19 +7,25 @@ import java.io.IOException;
 
 /**
  * Class for reading messages from server
+ *
  * @author Vadim Chernetski
  */
 public class MessageReader extends Thread {
 
-    /** Stream receiving messages */
+    /**
+     * Stream receiving messages
+     */
     private BufferedReader in;
 
-    /** Log4j instance */
+    /**
+     * Log4j instance
+     */
     private Logger logger;
 
     /**
      * Constructor
-     * @param in - stream receiving messages
+     *
+     * @param in     - stream receiving messages
      * @param logger - Log4j instance
      */
     public MessageReader(BufferedReader in, Logger logger) {

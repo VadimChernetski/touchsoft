@@ -13,11 +13,14 @@ import java.util.Scanner;
 
 /**
  * Class for user with role Agent
+ *
  * @author Vadim Chernetski
  */
 public class Agent {
 
-    /** templates of nessages */
+    /**
+     * templates of nessages
+     */
     private List<String> responseTemplates;
 
     {
@@ -28,10 +31,11 @@ public class Agent {
 
     /**
      * Constructor. In this constructor starts threads for reading and writing messages
-     * @param name - name of User
+     *
+     * @param name                - name of User
      * @param registrationMessage - user input during registration
-     * @param scanner - instance of Scanner class
-     * @param logger - instance of Log4j class
+     * @param scanner             - instance of Scanner class
+     * @param logger              - instance of Log4j class
      */
     public Agent(String name, String registrationMessage, Scanner scanner, Logger logger) {
         int i = 0;

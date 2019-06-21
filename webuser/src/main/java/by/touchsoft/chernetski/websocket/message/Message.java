@@ -4,36 +4,44 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
  * Message class
+ *
  * @author Vadim Chernetski
  */
 @AllArgsConstructor
 @NoArgsConstructor
 public class Message {
 
-    /** Message context */
-    @Getter @Setter
+    /**
+     * Message context
+     */
+    @Getter
+    @Setter
     private String context;
 
-    /** Name of user */
-    @Getter @Setter
+    /**
+     * Name of user
+     */
+    @Getter
+    @Setter
     private String name;
 
     /**
      * adding dispatch time
      */
-    public void writeInTime(){
+    public void writeInTime() {
         LocalTime time = LocalTime.now();
         context = "(" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "): " + context;
     }
 
     @Override
     public String toString() {
-        return name + " " + context;
+        return name.trim() + " " + context.trim();
     }
 
     @Override

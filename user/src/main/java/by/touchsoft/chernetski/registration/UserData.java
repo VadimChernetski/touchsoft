@@ -8,23 +8,33 @@ import java.util.regex.Matcher;
 
 /**
  * Class for user's registration
+ *
  * @author Vadim Chernetski
  */
 public class UserData {
 
-    /** Name of user */
+    /**
+     * Name of user
+     */
     @Getter
     private String name;
-    /** Role of user*/
+    /**
+     * Role of user
+     */
     private String role;
-    /** user input */
+    /**
+     * user input
+     */
     @Getter
     private String registrationMessage;
-    /** instance of Scanner class */
+    /**
+     * instance of Scanner class
+     */
     private Scanner scanner;
 
     /**
      * Constructor
+     *
      * @param scanner - instance of Scanner class
      */
     public UserData(Scanner scanner) {
@@ -33,6 +43,7 @@ public class UserData {
 
     /**
      * User information gathering method
+     *
      * @return role of user
      */
     public String register() {
@@ -53,6 +64,7 @@ public class UserData {
 
     /**
      * Input validation
+     *
      * @param registrationMessage - input
      * @return true if check passed, else - false
      */
