@@ -4,8 +4,8 @@ package by.touchsoft.chernetski.connection;
  * Class that connects agents and clients
  * @author Vadim Chernetski
  */
-public class Connector extends Thread {
-
+public class Connector extends Thread { //Пустой класс, который не содержит в себе никакого функционала,
+                                        // а просто делегирует run() методу класса Users
     /** Instance of Users class */
     private Users users;
 
