@@ -29,8 +29,8 @@ public class ServerRunner {
             ServerSocket serverSocket = new ServerSocket(ServerConstants.PORT);
             while (true){
                 socket = serverSocket.accept();
-                ServerCreator.CreateServer(socket, users, logger);
-            }
+                ServerCreator.CreateServer(socket, users, logger); //по возможности нужно избегать лишних действий
+            }                                                      //в потоке который принимает входящие сокеты
         } catch (IOException exception){
             logger.error(exception.getMessage() + "\n" + exception.getStackTrace());
         }
