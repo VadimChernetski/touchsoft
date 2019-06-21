@@ -12,8 +12,10 @@ import java.util.*;
  * Class contains queue of agents and users and connects/disconnects them
  * @author Vadim Chernetski
  */
-public class Users {
-
+public class Users {    //по своему функционалу класс не является какой-либо сущностью, класс обработчик
+                        //всего что происхдит в программе, не понятно зачем делать его инстанс и передавать по цепочке
+                        //остальным классам, тем самым загромождая код. Не проще ли было запроектировать его как
+                        //класс с набором статических методов и полей
     /** Monitor that used for thread safe operations */
     private static final String monitor = "monitor";
     /** Queue of free agents */
@@ -38,7 +40,7 @@ public class Users {
      * @param agent - AgentServer instance
      * @throws IllegalArgumentException if agent is null
      */
-    public void addUser(AgentServer agent) {
+    public void addUser(AgentServer agent) {    //более содержательное название - addAgent
         if (agent == null) {
             throw new IllegalArgumentException();
         }
@@ -54,7 +56,7 @@ public class Users {
      * @param agent - AgentServer that stops working
      * @throws IllegalArgumentException if agent is null
      */
-    public void userExit(AgentServer agent) {
+    public void userExit(AgentServer agent) {   //более содержательное название - agentExit
         if (agent == null) {
             throw new IllegalArgumentException();
         }
@@ -78,7 +80,7 @@ public class Users {
      * @param client - ClientServer instance
      * @throws IllegalArgumentException if client is null
      */
-    public void addUser(ClientServer client) {
+    public void addUser(ClientServer client) {      //более содержательное название - addClient
         if (client == null) {
             throw new IllegalArgumentException();
         }
@@ -121,7 +123,7 @@ public class Users {
      * @param client - ClientServer that stops working
      * @throws IllegalArgumentException if client is null
      */
-    public void userExit(ClientServer client) {
+    public void userExit(ClientServer client) {     //более содержательное название - clientExit
         if (client == null) {
             throw new IllegalArgumentException();
         }

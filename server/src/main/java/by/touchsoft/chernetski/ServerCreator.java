@@ -20,7 +20,7 @@ public class ServerCreator {
      * @param users - instance of Users class
      * @param logger - instance of logger
      */
-    public static void CreateServer(Socket socket, Users users, Logger logger) {
+    public static void CreateServer(Socket socket, Users users, Logger logger) { //название метода с заглавной буквы?
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));

@@ -49,9 +49,9 @@ public class ClientServer extends Thread implements UserServer {
         this.users = users;
         this.clientName = name;
         this.logger = loger;
-        agent = Optional.empty();
-        connectionStatus = false;
-        messagesBeforeAgentConnect = new LinkedList<>();
+        agent = Optional.empty();                       //Для читаемости кода лучше инициализировать
+        connectionStatus = false;                       //эти 3 поля в полях класса,
+        messagesBeforeAgentConnect = new LinkedList<>();// а не в конструкторе
     }
 
     /**
@@ -94,9 +94,9 @@ public class ClientServer extends Thread implements UserServer {
     /**
      * Method sends all missed messages
      */
-    public void sendMessages() {
-        StringBuilder history = new StringBuilder();
-        if (!messagesBeforeAgentConnect.isEmpty()) {
+    public void sendMessages() {    //зачем сохранять сообщения в ArrayList что бы потом сделать из него StringBuilder?
+        StringBuilder history = new StringBuilder();    //если сразу сохранять в StringBuilder, можно избежать
+        if (!messagesBeforeAgentConnect.isEmpty()) {    //лишних строк кода и ненужных операций
             int messagesCount = messagesBeforeAgentConnect.size();
             for (int i = 0; i < messagesCount; i++) {
                 if(i == messagesCount - 1){
@@ -106,7 +106,7 @@ public class ClientServer extends Thread implements UserServer {
                 }
             }
             messagesBeforeAgentConnect.clear();
-            history.subSequence(history.length()-2, history.length()-1);
+            history.subSequence(history.length()-2, history.length()-1); // эта строчка вообще неопнятно зачем
             agent.get().sendMessage(history.toString());
         }
     }
@@ -140,8 +140,8 @@ public class ClientServer extends Thread implements UserServer {
                 in.close();
             }
             if (!socket.isClosed()) {
-                socket.close();
-            }
+                socket.close(); //закрытие сокета влечет за собой закрытие IO ресурсов.
+            }           // JavaDoc: Closing this socket will also close the socket's InputStream and OutputStream
         } catch (IOException exception) {
             logger.error(exception.getMessage());
         }

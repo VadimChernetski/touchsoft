@@ -44,8 +44,8 @@ public class AgentServer extends Thread implements  UserServer{
         this.users = users;
         this.agentName = name;
         this.logger = logger;
-        client = Optional.empty();
-        connectionStatus = false;
+        client = Optional.empty();      //Для читаемости кода лучше инициализировать эти 2 поля в полях класса,
+        connectionStatus = false;       // а не в конструкторе
     }
 
     /**
