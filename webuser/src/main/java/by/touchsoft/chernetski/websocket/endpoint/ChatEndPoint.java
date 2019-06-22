@@ -35,7 +35,7 @@ public class ChatEndPoint {
     /**
      * Instance of Log4j class
      */
-    private Logger logger = Logger.getLogger("webApp");
+    private static Logger logger = Logger.getLogger("webApp");
 
     /**
      * Instance of Session class
