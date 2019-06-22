@@ -38,6 +38,11 @@ public class ChatEndPoint {
     private static Logger logger = Logger.getLogger("webApp");
 
     /**
+     * Monitor for using session
+     */
+    private static final Object monitor = new Object();
+
+    /**
      * Instance of Session class
      */
     @Getter
@@ -71,7 +76,9 @@ public class ChatEndPoint {
     public void onMessage(Message message) throws IOException, EncodeException {
         if (connectionStatus) {
             connector.sendMessage(handleMessage(message));
-            session.getBasicRemote().sendObject(message);
+            synchronized (monitor) {
+                session.getBasicRemote().sendObject(message);
+            }
             if (message.getContext().equals("/exit")) {
                 connectionStatus = false;
                 connector = null;
@@ -98,8 +105,10 @@ public class ChatEndPoint {
      */
     public void sendMessage(Message message) {
         try {
-            session.getBasicRemote().sendObject(message);
-        } catch (IOException | EncodeException exception) {
+            synchronized (monitor) {
+                session.getBasicRemote().sendObject(message);
+            }
+        } catch (IOException | EncodeException | IllegalStateException exception) {
             logger.error(exception.getMessage());
         }
     }

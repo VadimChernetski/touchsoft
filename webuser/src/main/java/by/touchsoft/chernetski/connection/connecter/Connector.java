@@ -84,7 +84,6 @@ public class Connector extends Thread {
         Message message;
         String name;
         while (true) {
-            System.out.println("start" + this.name);
             try {
                 input = in.readLine();
                 if (input.equals("/exit")) {
@@ -103,6 +102,8 @@ public class Connector extends Thread {
                 logger.error(exception.getMessage());
                 endPoint.sendMessage(new Message("some problems with server", "server"));
                 break;
+            } catch (NullPointerException ex){
+                ex.printStackTrace();
             }
         }
     }

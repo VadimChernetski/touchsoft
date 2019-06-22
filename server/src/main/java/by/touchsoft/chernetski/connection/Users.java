@@ -60,6 +60,7 @@ public class Users {
         }
         return instance;
     }
+
     /**
      * Method adds agent to the queue
      * @param agent - AgentServer instance
