@@ -102,8 +102,10 @@ public class Connector extends Thread {
                 logger.error(exception.getMessage());
                 endPoint.sendMessage(new Message("some problems with server", "server"));
                 break;
-            } catch (NullPointerException ex){
-                ex.printStackTrace();
+            } catch (NullPointerException exception){
+                logger.error(exception.getMessage());
+                endPoint.sendMessage(new Message("some problem with server", "server"));
+                break;
             }
         }
     }

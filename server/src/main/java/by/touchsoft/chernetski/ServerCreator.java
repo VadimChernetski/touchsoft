@@ -33,7 +33,6 @@ public class ServerCreator {
                     ClientServer client = new ClientServer(in, out, socket, name, logger);
                     client.setUncaughtExceptionHandler((t, e) -> logger.error(e.getMessage()));
                     client.start();
-                    users.addUser(client);
                     break;
                 case "agent":
                     AgentServer agent = new AgentServer(in, out, socket, name, logger);

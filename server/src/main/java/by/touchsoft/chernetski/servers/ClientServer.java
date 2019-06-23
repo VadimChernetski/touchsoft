@@ -9,8 +9,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,6 +24,11 @@ public class ClientServer extends Thread {
     @Setter
     private boolean connectionStatus;
 
+    /**
+     * Displays client is in queue
+     */
+    @Setter
+    private boolean inQueue;
     /**
      * Stream receiving messages
      */
@@ -78,6 +81,7 @@ public class ClientServer extends Thread {
         this.users = Users.getInstance(logger);
         this.clientName = name;
         this.logger = loger;
+        this.inQueue = false;
         agent = Optional.empty();
         connectionStatus = false;
         messagesBeforeAgentConnect = new StringBuilder();
@@ -88,10 +92,16 @@ public class ClientServer extends Thread {
      */
     @Override
     public void run() {
+        this.sendMessage("waiting for agent");
+        this.sendMessage("Type message for start chat");
         String message;
         while (true) {
             try {
                 message = in.readLine();
+                if(!inQueue){
+                    users.addUser(this);
+                    inQueue = true;
+                }
                 if (message.equals("/leave")) {
                     if (connectionStatus) {
                         users.disconnectClient(this);
@@ -135,7 +145,6 @@ public class ClientServer extends Thread {
      *
      * @param message - context of message
      */
-
     public void sendMessage(String message) {
         try {
             out.write(message + "\n");

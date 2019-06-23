@@ -114,7 +114,6 @@ public class Users {
             throw new IllegalArgumentException();
         }
         logger.info("client " + client.getClientName() + " connected");
-        client.sendMessage("waiting for agent");
         synchronized (monitor) {
             if (!freeClients.contains(client)) {
                 freeClients.addLast(client);
@@ -141,8 +140,8 @@ public class Users {
             agent.get().sendMessage("Client disconnected");
             agent.get().setConnectionStatus(false);
             agent.get().setClient(Optional.empty());
+            client.setInQueue(false);
             synchronized (monitor) {
-                freeClients.addLast(client);
                 freeAgents.offer(agent.get());
                 monitor.notify();
             }
