@@ -29,6 +29,7 @@ public class UserDataTest {
         System.setOut(newOut);
         UserData userData = new UserData(scanner);
         String expected = "Register please\n" +
+                "input: register client|agent name\n" +
                 "Wrong command, try again\n";
         userData.register();
         System.setOut(oldOut);

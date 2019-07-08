@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+    <form action="/registration/register" method="post">
+        <div>
+            <p>Выберите роль</p>
+            <input type="radio" name="role" value="agent">Agent
+            <input type="radio" name="role" value="client">Client
+        </div>
+        <p></p>
+        <div>
+            <input name="name" type="text" placeholder="input your name">
+        </div>
+        <p></p>
+        <div>
+            <input name="password" type="text" placeholder="input your password">
+        </div>
+        <p></p>
+        <div>
+            <input name="email" type="email" placeholder="input your email">
+        </div>
+        <p></p>
+        <div>
+            <button type="submit">Send data</button>
+        </div>
+    </form>
+    <form action="/" method="GET">
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

@@ -3,7 +3,6 @@ package by.touchsoft.chernetski.connection.connecter;
 import by.touchsoft.chernetski.connection.constants.ConnectionConstants;
 import by.touchsoft.chernetski.websocket.endpoint.ChatEndPoint;
 import by.touchsoft.chernetski.websocket.message.Message;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.log4j.Logger;
@@ -80,7 +79,7 @@ public class Connector extends Thread {
     public void run() {
         String input;
         Matcher matcher;
-        Pattern pattern = Pattern.compile("[A-z]+ (?=\\()");
+        Pattern namePattern = Pattern.compile("[A-z]+ (?=\\()");
         Message message;
         String name;
         while (true) {
@@ -90,7 +89,7 @@ public class Connector extends Thread {
                     exit();
                     break;
                 }
-                matcher = pattern.matcher(input);
+                matcher = namePattern.matcher(input);
                 if (matcher.find()) {
                     name = matcher.group();
                     message = new Message(input.replaceAll(name, ""), name);

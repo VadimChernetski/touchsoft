@@ -9,3 +9,6 @@
 /serverLog.log
 /userLog.log
 /server/serverLog.log
+/restchat/.idea
+/restchat/target
+/restchat/restchat.iml
