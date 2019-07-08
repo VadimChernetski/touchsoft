@@ -47,7 +47,7 @@ public class UserData {
      * @return role of user
      */
     public String register() {
-        System.out.print("Register please\ninput: register client|agent name\n");
+        System.out.print("Register please\ninput: registration client|agent name");
         while (true) {
             registrationMessage = scanner.nextLine();
             String[] clientData = registrationMessage.split(" ");
