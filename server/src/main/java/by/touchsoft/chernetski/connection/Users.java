@@ -70,7 +70,6 @@ public class Users {
         if (agent == null) {
             throw new IllegalArgumentException();
         }
-        agent.sendMessage("waiting for client");
         logger.info(agent.getAgentName() + " connected");
         synchronized (monitor) {
             if(!freeAgents.contains(agent)) {

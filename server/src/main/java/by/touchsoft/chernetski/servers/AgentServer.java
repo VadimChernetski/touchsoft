@@ -79,6 +79,7 @@ public class AgentServer extends Thread {
      */
     @Override
     public void run() {
+        this.sendMessage("waiting for client");
         String message;
         while (true) {
             try {
