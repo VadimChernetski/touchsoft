@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>CHAT</h1>
+<ul id="chat">
+
+</ul>
+<form>
+    <input id="message" type="text">
+    <button id="send" type="submit">Send</button>
+</form>
+<form action="/client/chat/leave" method="get">
+    <button type="submit">Disconnect from agent</button>
+</form>
+<form action="/client/chat/exit" method="get">
+    <button type="submit">Exit</button>
+</form>
+<script src="/js/chatClient.js"></script>
+</body>
+</html>
